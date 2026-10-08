@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>PARKING Lviv</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Inter:wght@300;400;500;600&family=Sora:wght@600;700;800&display=swap">
 <style>
 /* Layout: one phone-sized app; on wide screens it sits in a device frame, on phones it fills the screen. Single dark look by design (night city). */
 :root{
@@ -259,6 +259,41 @@ input[type=range]{width:100%;accent-color:var(--or)}
 /* buttons, search: frosted glass (frost 26) */
 .round,.icon-btn,.search .box,.btn-ghost{background:rgba(14,14,14,.62)!important;backdrop-filter:blur(13px) saturate(160%)!important;-webkit-backdrop-filter:blur(13px) saturate(160%)!important;
  box-shadow:inset 0 0 12px rgba(255,255,255,.06),inset 0 -8px 16px rgba(0,0,0,.2),0 6px 18px rgba(0,0,0,.25)!important}
+
+/* ---------- Parking info (matches Figma "Parking Info") ---------- */
+.pinfo .pi-map{position:relative;height:calc(226px + env(safe-area-inset-top,0px));flex:none;overflow:hidden;isolation:isolate;z-index:1}
+.pinfo .pi-map .mini{position:absolute;inset:0}
+.pi-credit{position:absolute;right:10px;bottom:16px;z-index:402;font-size:8px;color:#777}
+.pi-pin{position:absolute;left:50%;top:calc(50% + 7px);transform:translate(-50%,-100%);z-index:403}
+.pi-top{position:absolute;top:0;left:0;right:0;z-index:404}
+.pi-panel{margin-top:-11px;position:relative;z-index:2;background:#111;padding:0 16px 16px!important}
+.pi-handle{display:block;width:39px;height:4px;border-radius:2px;background:#7f7f7f;margin:10px auto 18px}
+.pi-card{background:#242424;border-radius:28px;padding:28px 0 6px;overflow:hidden}
+.pi-head{display:flex;justify-content:space-between;align-items:flex-start;padding:0 24px}
+.pi-id{font-family:var(--f-disp);font-weight:800;font-size:32px;line-height:1;color:#f4f5f2;letter-spacing:-.01em}
+.pi-loc{font-size:12px;color:rgba(244,245,242,.5);margin-top:10px}
+.pi-p{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,107,0,.15);border:1.4px solid rgba(255,107,0,.35);color:#ff3700;font-family:'DM Sans',var(--f-disp);font-weight:700;font-size:18px;flex:none;margin-top:-10px}
+.pi-badges{display:flex;gap:8px;padding:0 24px;margin-top:12px}
+.pi-b{padding:3px 10px;border-radius:28px;font-size:11px;font-weight:500;color:#888;background:rgba(255,255,255,.06);border:.7px solid rgba(255,255,255,.1)}
+.pi-b.on{color:#ff3700;font-weight:600;letter-spacing:.2px;background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.25)}
+.pi-stats{display:flex;align-items:center;margin-top:16px;padding:16px;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);border-radius:28px}
+.pi-stats>div{flex:1;text-align:center;display:flex;flex-direction:column;gap:4px}
+.pi-stats>i{width:1px;height:38px;background:rgba(255,255,255,.08);flex:none}
+.pi-v{font-family:var(--f-disp);font-weight:700;font-size:22px;color:#f4f5f2;line-height:25px;white-space:nowrap}
+.pi-v.or{color:#ff8e39}.pi-v small{font-size:13px;font-weight:600}
+.pi-l{font-size:11px;color:#666}
+.pi-sec{padding:16px 20px}
+.pi-cap{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#666}
+.pi-chips{display:flex;flex-wrap:wrap;gap:9px 13px;margin-top:10px}
+.pi-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);font-size:12px;color:#aaa}
+.pi-info{border-top:1px solid rgba(255,255,255,.1);padding:8px 20px 0}
+.pi-row{display:flex;align-items:center;gap:13px;padding:14px 0 14px 1px}
+.pi-row+.pi-row{border-top:1px solid rgba(255,255,255,.1);margin:0 -20px;padding-left:21px;padding-right:20px}
+.pi-row svg{flex:none;width:27px;display:block}
+.pi-row b{display:block;font-weight:400;font-size:12px;color:#f4f5f2;line-height:18px}
+.pi-row span{display:block;font-weight:300;font-size:10px;color:#f4f5f2;line-height:18px}
+.pi-info .pi-cap{margin-top:0}
+.lpin .pin.sm{width:22px;height:22px;font-size:10px}
 </style>
 
 </head>
@@ -447,17 +482,20 @@ const SCREENS={
   const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label">Nearby · ${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div><div class="row" style="justify-content:space-between;margin-top:6px"><div><div class="num" style="font-size:24px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:2px">${p.name}, Lviv</div></div><div style="text-align:right"><span class="num or" style="font-size:24px">${money(p.rate)}</span><span class="hint"> /hr</span><div style="color:var(--red);font-size:12px;margin-top:4px">${p.spots} spots</div></div></div></button>`:'';
   const none = !filtered().length && st==='none' ? `<div class="card" style="position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px"><b>No parking matches</b><p class="hint" style="margin:6px 0 0">Change the filters or search to see more spots.</p></div>`:'';
   return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div class="map-glow"></div><div class="map-glow b"></div><div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
- info(){ const p=P(UI.selected); return `<div class="screen"><div style="position:relative;height:250px;flex:none;overflow:hidden;isolation:isolate;z-index:1"><div class="mini" data-mini="${p.id}" data-zoom="16" data-oy="-15">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;left:${-(p.x-196)}px;top:${-(p.y-140)}px;width:900px;height:1200px"`)}</div><div style="position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(rgba(17,17,17,0),#111);z-index:401;pointer-events:none"></div><span style="position:absolute;right:8px;bottom:30px;z-index:402;font-size:9px;color:#777">© Esri © OpenStreetMap</span><div style="position:absolute;left:50%;top:140px;transform:translate(-50%,-100%);z-index:403"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div><div style="position:absolute;top:0;left:0;right:0;z-index:404">${statusBar()}<div style="padding:4px 16px"><button class="icon-btn" style="background:rgba(17,17,17,.7)" data-a="back" aria-label="Back">${I.back}</button></div></div></div>
-  <div class="scroll" style="margin-top:-24px;position:relative;z-index:2"><div class="card" style="padding:20px">
-   <div class="row" style="justify-content:space-between"><div><div class="num" style="font-size:30px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:4px">${p.name}, Lviv</div></div></div>
-   <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><span class="badge" style="background:rgba(255,55,0,.14);color:var(--warn)">Open now</span><span class="badge" style="background:#303030;color:#bbb">${p.h24?'24/7 access':p.hours}</span><span class="badge" style="background:#303030;color:#bbb">${p.type[0].toUpperCase()+p.type.slice(1)}</span></div>
-   <div style="display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;text-align:center">
-    <div><div class="num or" style="font-size:22px">${money(p.rate)}<span style="font-size:12px">/hr</span></div><div class="hint">Per hour</div></div>
-    <div style="border-left:1px solid var(--line);border-right:1px solid var(--line)"><div class="num" style="font-size:22px">${p.spots}</div><div class="hint">Free spaces</div></div>
-    <div><div class="num" style="font-size:22px">${money(p.day)}</div><div class="hint">Per day</div></div></div></div>
-   <div class="label" style="margin:22px 4px 10px">Amenities</div><div class="row" style="flex-wrap:wrap;gap:8px">${[p.access&&'Accessible','Mobile payment',p.ev&&'EV charging','Daily parking'].filter(Boolean).map(a=>`<span class="chip" style="pointer-events:none">${a}</span>`).join('')}</div>
-   <div class="label" style="margin:22px 4px 4px">Parking info</div><div class="kv"><span>Distance</span><span>${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'} from you</span></div><div class="kv"><span>Hours</span><span>${p.h24?'24/7':p.hours}</span></div><div class="kv"><span>Rules</span><span>Front-in parking</span></div></div>
-  <div class="foot" style="flex-direction:row"><a class="btn btn-ghost" style="text-decoration:none" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+', Lviv')}" target="_blank" rel="noopener">Directions</a><button class="btn btn-primary" data-a="toSetup">Continue</button></div></div>`; },
+ info(){ const p=P(UI.selected);
+  const am=[p.access&&['Accessible',IC.acc],['Mobile payment',IC.mob],p.ev&&['EV charging',IC.ev],['Daily parking',IC.day]].filter(Boolean);
+  const third=p.h24?['24/7','Access']:[p.hours.replace(/:00/g,'').replace(/^0/,'').replace('–0','–'),'Hours'];
+  return `<div class="screen pinfo"><div class="pi-map"><div class="mini" data-mini="${p.id}" data-zoom="15" data-oy="7" data-pins="1">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;left:${-(p.x-196)}px;top:${-(p.y-120)}px;width:900px;height:1200px"`)}</div><span class="pi-credit">© Esri © OpenStreetMap</span><div class="pi-pin"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div><div class="pi-top">${statusBar()}<div style="padding:4px 16px"><button class="icon-btn" data-a="back" aria-label="Back">${I.back}</button></div></div></div>
+  <div class="scroll pi-panel"><i class="pi-handle"></i><div class="pi-card">
+   <div class="pi-head"><div><div class="pi-id">${p.id}</div><div class="pi-loc">${p.name}, Lviv</div></div><span class="pi-p">P</span></div>
+   <div class="pi-badges"><span class="pi-b on">Open now</span><span class="pi-b">${p.h24?'24/7 access':p.hours}</span></div>
+   <div class="pi-stats"><div><div class="pi-v or">${money(p.rate)}<small>/hr</small></div><div class="pi-l">Per hour</div></div><i></i><div><div class="pi-v">${p.spots}</div><div class="pi-l">Free spaces</div></div><i></i><div><div class="pi-v">${third[0]}</div><div class="pi-l">${third[1]}</div></div></div>
+   <div class="pi-sec"><div class="pi-cap">Amenities</div><div class="pi-chips">${am.map(([t,ic])=>`<span class="pi-chip">${ic}<span>${t}</span></span>`).join('')}</div></div>
+   <div class="pi-info"><div class="pi-cap">Parking info</div>
+    <div class="pi-row">${IC.car}<div><b>Front-in parking</b><span>Park facing forward</span></div></div>
+    ${p.access?`<div class="pi-row">${IC.accF}<div><b>Accessible spaces</b><span>2 designated spots</span></div></div>`:`<div class="pi-row">${IC.clock}<div><b>${p.h24?'Open 24/7':'Open '+p.hours}</b><span>${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'} from you</span></div></div>`}
+   </div></div></div>
+  <div class="foot" style="flex-direction:row;gap:16px"><a class="btn btn-ghost" style="text-decoration:none" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+', Lviv')}" target="_blank" rel="noopener">Directions</a><button class="btn btn-primary" data-a="toSetup">Continue</button></div></div>`; },
  setup(){ const p=P(UI.selected), daily=S.setup.mode==='daily'; const v=veh(); const val=daily?S.setup.days:S.setup.hours; const unit=daily?'day':'hour'; const until=vnow()+setupMins()*60e3;
   return `<div class="screen">${statusBar()}${hdr('Parking setup')}<div class="scroll">
    <div class="card row" style="padding:16px"><div style="width:56px;height:56px;border-radius:14px;overflow:hidden;position:relative;flex:none;background:#1a1512"><div class="mini" data-mini="${p.id}" data-zoom="15">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;width:300px;height:400px;left:${-(p.x/3-28)}px;top:${-(p.y/3-28)}px"`)}</div><span style="position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;background:#ff3700;border:2px solid #111;transform:translate(-50%,-50%);z-index:405"></span></div><div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><span class="num" style="font-size:22px">${p.id}</span><span class="or" style="font-size:13px;font-weight:600">${daily?money(p.day)+'/day':money(p.rate)+'/hr'}</span></div><div class="hint">${p.name}, Lviv</div><div style="color:var(--red);font-size:11px;margin-top:3px">Open now · ${p.h24?'24/7 access':p.hours}</div></div></div>
@@ -641,6 +679,15 @@ const ToneLayer=(window.L&&L.TileLayer)?L.TileLayer.extend({
   load(true); return c; }
 }):null;
 const tones=(url,opt)=>ToneLayer?new ToneLayer(url,opt):L.tileLayer(url,opt);
+const IC={
+ acc:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.22"><path d="M12 6a2.25 2.25 0 1 0 0-4.5A2.25 2.25 0 0 0 12 6Z"/><path d="M7.5 9.75h9M12 9.75V15l3 4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 19.5 12 15" stroke-linecap="round"/></svg>',
+ mob:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.22"><path d="M15 2.25H9A2.25 2.25 0 0 0 6.75 4.5v15A2.25 2.25 0 0 0 9 21.75h6a2.25 2.25 0 0 0 2.25-2.25v-15A2.25 2.25 0 0 0 15 2.25Z"/><path d="M10.5 18.75h3" stroke-linecap="round"/><path d="M9.75 9 12 11.25l3.75-3.75" stroke-width="1.14" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ day:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.22"><path d="M19.5 5.25h-15A2.25 2.25 0 0 0 2.25 7.5v12a2.25 2.25 0 0 0 2.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25v-12a2.25 2.25 0 0 0-2.25-2.25Z"/><path d="M2.25 10.5h19.5M8.25 2.25v6M15.75 2.25v6" stroke-linecap="round"/><path d="M11.29 16.9h1.5a1.5 1.5 0 0 0 0-3h-1.5v5" stroke-width="1.14" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ ev:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.22" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2.75 5.75 13.5h6l-1 7.75 7.5-11h-6l.75-7.5Z"/></svg>',
+ car:'<svg width="22" height="20" viewBox="0 0 22 20" fill="#ff3700"><path d="M17.26 0c.53 0 1.01.16 1.44.47.43.31.72.72.89 1.22l2.29 6.66c.04.12.07.26.09.4.02.15.03.29.03.44v8.94c0 .52-.18.96-.53 1.33-.36.36-.79.55-1.3.54-.51 0-.94-.18-1.3-.55a1.84 1.84 0 0 1-.54-1.33.63.63 0 0 0-.62-.62H4.29a.63.63 0 0 0-.62.62c0 .52-.18.96-.54 1.33-.35.36-.79.55-1.3.54-.51 0-.94-.18-1.3-.55A1.84 1.84 0 0 1 0 18.12V9.19c0-.15.01-.29.03-.44.02-.14.05-.28.09-.4l2.29-6.66c.16-.5.46-.91.89-1.22.43-.31.91-.47 1.44-.47h12.52ZM5.5 10c-.51 0-.94.18-1.3.55-.35.37-.53.81-.53 1.33 0 .52.18.96.53 1.33.36.37.79.55 1.3.54.51 0 .94-.18 1.3-.54.36-.37.53-.81.53-1.33 0-.52-.18-.96-.53-1.33A1.73 1.73 0 0 0 5.5 10Zm11 0c-.51 0-.94.18-1.3.55-.35.37-.53.81-.53 1.33 0 .52.18.96.53 1.33.36.37.79.55 1.3.54.51 0 .94-.18 1.3-.54.36-.37.53-.81.53-1.33 0-.52-.18-.96-.53-1.33A1.73 1.73 0 0 0 16.5 10ZM4.27 3.77A1.87 1.87 0 0 0 6.05 6.25h9.9a1.87 1.87 0 0 0 1.78-2.48 1.87 1.87 0 0 0-1.78-1.27h-9.9c-.8 0-1.52.51-1.78 1.27Z"/></svg>',
+ accF:'<svg width="27" height="27" viewBox="0 0 27 27" fill="#ff3700"><path d="M11.25 5.34a2.53 2.53 0 1 0 0-5.06 2.53 2.53 0 0 0 0 5.06Z"/><path d="M9.34 5.96a2.48 2.48 0 0 1 2.47 2.48v3.37h3.83c.9 0 1.8.56 2.25 1.35l2.25 4.16h2.7a1.69 1.69 0 0 1 0 3.38h-3.71a2.58 2.58 0 0 1-2.25-1.35l-2.14-3.94h-3.71a2.59 2.59 0 0 1-2.59-2.47v-4.5c0-1.01.56-1.91.9-2.48Z"/><path d="M7.99 12.6a6.19 6.19 0 1 0 6.52 7.76l-1.91-3.49a3.2 3.2 0 1 1-4.16-3.15l-.45-1.12Z"/></svg>',
+ clock:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff3700" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+};
 const PIN_SVG='<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg>';
 ['gesturestart','gesturechange'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 if(window.navigator.standalone===true||matchMedia('(display-mode: standalone)').matches) document.documentElement.classList.add('standalone');
@@ -677,6 +724,7 @@ function mountMinis(){
  document.querySelectorAll('[data-mini]').forEach(el=>{ if(el._leaflet_id) return; const p=P(el.dataset.mini); const z=+el.dataset.zoom||15;
   const mm=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,tap:false}).setView([p.lat,p.lng],z);
   tones(TILE,{...TOPT,tone:'base',className:'tiles-base'}).addTo(mm); tones(LBL,{...TOPT,tone:'labels',className:'tiles-labels'}).addTo(mm);
+  if(el.dataset.pins){ PARKINGS.filter(q=>q.id!==p.id).forEach(q=>L.marker([q.lat,q.lng],{icon:L.divIcon({className:'lpin',html:'<div class="pin sm">P</div>',iconSize:[22,22],iconAnchor:[11,11]}),interactive:false}).addTo(mm)); }
   if(el.dataset.oy){ mm.panBy([0,+el.dataset.oy*-1],{animate:false}); }
   LMAP.minis.push(mm); });
 }

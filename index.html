@@ -35,6 +35,7 @@ input{font:inherit;color:inherit}
 @media (max-width:520px),(max-height:700px),(display-mode:standalone){
  html,body{background:#111;overscroll-behavior:none}
  .stage{padding:0;position:fixed;top:0;left:0;right:0;bottom:0;height:auto}
+ html.standalone .stage{bottom:auto;height:var(--app-h,100%)}
  .device{width:100%;height:100%;max-height:none;border-radius:0;box-shadow:none}
  .status{height:calc(env(safe-area-inset-top,0px) + 10px);padding:0;overflow:hidden}
  .status>*{display:none!important}
@@ -200,6 +201,10 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .sheet.closing{animation:sheetOut .24s ease-in forwards}
 .scrim.closing{animation:fadeOut .24s forwards}
 @keyframes sheetOut{to{transform:translateY(100%)}}
+@keyframes cardOut{to{transform:translateY(-140%);opacity:0}}
+@keyframes topIn{from{transform:translateY(-120%);opacity:0}}
+.session-card.leaving{animation:cardOut .38s cubic-bezier(.4,0,1,1) forwards;pointer-events:none}
+.map-top.enter{animation:topIn .42s cubic-bezier(.2,.8,.2,1)}
 /* leaflet (essential subset of leaflet.css) */
 .lmap{position:absolute;inset:0;z-index:0;background:#0d0d0d;display:none}
 .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
@@ -373,6 +378,12 @@ function startSession(){
  S.session={pid:p.id,startAt:now,endsAt:now+mins*60e3,mins,total,mode:S.setup.mode,plate:veh().plate,model:`${veh().model} · ${veh().color}`,card:cardLabel(card()),warned:false,ended:false,id:'PK-'+String(Math.floor(now/1000)).slice(-4)};
  save(); notify('Parking started',`${p.id} · ${p.name} · ${durLabel(mins)} · ${money(total)}`);
 }
+function clearEndedOnMap(){
+ const fin=()=>{ UI.clearing=null; if(UI.route!=='map'||!S.session||sessionState()!=='ended') return;
+  S.session=null; UI.selected=null; save(); UI.mapIntro=true; render();
+  if(LMAP.map&&LMAP.mode==='leaflet'){ LMAP.lastSel=null; LMAP.map.flyTo([ME.lat,ME.lng+0.002],15,{duration:.7}); } };
+ const c=document.querySelector('#screens .session-card');
+ if(c&&UI.route==='map'){ c.classList.add('leaving'); setTimeout(fin,360); } else fin(); }
 function endSession(){
  const s=S.session; if(!s||s.ended) return; s.ended=true;
  S.history.unshift({id:s.id,pid:s.pid,start:s.startAt,mins:s.mins,mode:s.mode,total:s.total,plate:s.plate,card:s.card});
@@ -404,7 +415,7 @@ const SCREENS={
  map(){
   const st=sessionState(); const p=UI.selected?P(UI.selected):null;
   const top = st!=='none'? `<button class="card session-card" data-a="go" data-v="active"><div><div class="row" style="gap:8px"><span class="live ${st==='warn'?'warn':st==='ended'?'off':''}"></span><span class="label" style="color:var(--text)">${st==='ended'?'Parking ended':'Parking active'}</span></div><div class="hint" style="margin-top:6px">${S.session.pid} · ${P(S.session.pid).name}</div></div><span class="num" style="font-size:22px;color:${st==='ended'?'var(--mute)':'var(--or)'}" data-timer>${fmtRemain(remaining())}</span></button>` :
-   `<div class="map-top"><h1 class="h1" style="font-size:22px">Where do you want to park?</h1><div class="search"><label class="box"><span>${I.search}</span><input id="q" placeholder="Search for a location..." value="${UI.search}" data-m="search" aria-label="Search"></label><button class="round" data-a="sheet" data-v="filters" aria-label="Filters">${I.filter}${filtersOn()?'<i class="dot-badge"></i>':''}</button><button class="round" data-a="go" data-v="notifications" aria-label="Notifications" style="color:#f4f5f2">${I.bell}${S.notifs.some(n=>!n.read)?'<i class="dot-badge"></i>':''}</button></div>${UI.search.trim()?resultsHTML():''}</div>`;
+   `<div class="map-top ${UI.mapIntro?'enter':''}"><h1 class="h1" style="font-size:22px">Where do you want to park?</h1><div class="search"><label class="box"><span>${I.search}</span><input id="q" placeholder="Search for a location..." value="${UI.search}" data-m="search" aria-label="Search"></label><button class="round" data-a="sheet" data-v="filters" aria-label="Filters">${I.filter}${filtersOn()?'<i class="dot-badge"></i>':''}</button><button class="round" data-a="go" data-v="notifications" aria-label="Notifications" style="color:#f4f5f2">${I.bell}${S.notifs.some(n=>!n.read)?'<i class="dot-badge"></i>':''}</button></div>${UI.search.trim()?resultsHTML():''}</div>`;
   const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label">Nearby · ${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div><div class="row" style="justify-content:space-between;margin-top:6px"><div><div class="num" style="font-size:24px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:2px">${p.name}, Lviv</div></div><div style="text-align:right"><span class="num or" style="font-size:24px">${money(p.rate)}</span><span class="hint"> /hr</span><div style="color:var(--red);font-size:12px;margin-top:4px">${p.spots} spots</div></div></div></button>`:'';
   const none = !filtered().length && st==='none' ? `<div class="card" style="position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px"><b>No parking matches</b><p class="hint" style="margin:6px 0 0">Change the filters or search to see more spots.</p></div>`:'';
   return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div class="map-glow"></div><div class="map-glow b"></div><div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
@@ -556,6 +567,8 @@ function render(dir){
   if(old){ if(dir==='none'){ old.remove(); } else { old.classList.add('leaving','leave-'+dir); el.classList.add('enter-'+dir); setTimeout(()=>old.remove(),400); setTimeout(()=>el.classList.remove('enter-'+dir),420); } }
  }
  curRoute=route; renderTabs(); renderOverlay(); syncMap(); mountMinis(); bindMapDrag();
+ UI.mapIntro=false;
+ if(route==='map'&&S.session&&sessionState()==='ended'&&!UI.clearing){ UI.clearing=setTimeout(clearEndedOnMap,900); }
 }
 function renderTabs(){ const nav=$('#tabs'); if(!nav.dataset.built){ nav.dataset.built=1; nav.innerHTML=[['map','Map',I.map],['history','History',I.clock],['fines','Fines',I.fine],['profile','Profile',I.user]].map(([k,l,ic])=>`<button class="tab" data-a="tab" data-v="${k}">${ic}<span>${l}</span></button>`).join(''); }
  const t=TAB_OF[UI.route]; nav.classList.toggle('hidden',!t); nav.querySelectorAll('.tab').forEach(b=>{ const on=b.dataset.v===t; b.classList.toggle('on',on); b.setAttribute('aria-current',on?'page':'false'); }); }
@@ -602,6 +615,10 @@ const ToneLayer=(window.L&&L.TileLayer)?L.TileLayer.extend({
 const tones=(url,opt)=>ToneLayer?new ToneLayer(url,opt):L.tileLayer(url,opt);
 const PIN_SVG='<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg>';
 ['gesturestart','gesturechange'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
+/* iOS home-screen apps report a viewport shorter than the screen (minus the status bar): size to the real screen */
+(function fitStandalone(){ const sa=(window.navigator.standalone===true)||matchMedia('(display-mode: standalone)').matches; if(!sa) return; document.documentElement.classList.add('standalone');
+ const fit=()=>{ const portrait=innerHeight>=innerWidth; const sh=portrait?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height); document.documentElement.style.setProperty('--app-h',Math.max(innerHeight,sh)+'px'); };
+ fit(); addEventListener('resize',fit); addEventListener('orientationchange',()=>setTimeout(fit,300)); })();
 function initLeaflet(){
  if(!window.L){ LMAP.mode='svg'; return; }
  LMAP.mode='pending';

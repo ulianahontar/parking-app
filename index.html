@@ -218,8 +218,6 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .leaflet-control{pointer-events:auto}
 .leaflet-control-attribution{font-size:9px;background:rgba(0,0,0,.45);color:#8a8a8a;padding:1px 6px;border-radius:6px}
 .leaflet-control-attribution a{color:#b0b0b0;text-decoration:none}
-.tiles-base{filter:url(#maptone)}
-.tiles-labels{filter:grayscale(1) brightness(.75);opacity:.4}
 .lpin{background:none;border:0}
 .lpin .pin{position:static;transform:none}
 .mini{position:absolute;inset:0;overflow:hidden;background:#0d0d0d}
@@ -228,7 +226,7 @@ input[type=range]{width:100%;accent-color:var(--or)}
 
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="maptone" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values=".2126 .7152 .0722 0 0 .2126 .7152 .0722 0 0 .2126 .7152 .0722 0 0 0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.073 0.118 0.118 0.118 0.118 0.195 0.349 0.504 0.658 0.813 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890"/><feFuncG type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.073 0.118 0.118 0.118 0.118 0.167 0.266 0.365 0.464 0.562 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612"/><feFuncB type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.075 0.122 0.122 0.122 0.122 0.148 0.202 0.255 0.308 0.362 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388"/></feComponentTransfer></filter></svg><div class="stage"><div class="device" id="device"><div id="lmap" class="lmap"></div><div id="screens"></div><nav class="tabbar hidden" id="tabs" aria-label="Main"></nav><div id="overlay"></div><div class="toast" id="toast"><span class="tick"></span><span></span></div></div></div>
+<div class="stage"><div class="device" id="device"><div id="lmap" class="lmap"></div><div id="screens"></div><nav class="tabbar hidden" id="tabs" aria-label="Main"></nav><div id="overlay"></div><div class="toast" id="toast"><span class="tick"></span><span></span></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
@@ -570,15 +568,36 @@ function toast(text,cls=''){ const el=$('#toast'); el.className='toast '+cls; el
 const LMAP={mode:'svg',map:null,markers:{},me:null,lastSel:null,minis:[]};
 const TILE='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', LBL='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}';
 const TOPT={maxNativeZoom:16,maxZoom:19};
+/* Recolor tiles pixel-by-pixel on canvas (CSS/SVG filters differ per browser; Safari skips them on moving tiles) */
+const TONE=(()=>{ const bg=[13,13,13], bd=[30,30,31], rd=[227,156,99]; const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+ const lut=new Uint8ClampedArray(256*3);
+ for(let i=0;i<256;i++){ const v=i/255; let c;
+  if(v<.29) c=bg; else if(v<.305) c=mix(bg,bd,(v-.29)/.015); else if(v<.33) c=bd; else if(v<.36) c=mix(bd,rd,(v-.33)/.03); else c=rd;
+  lut.set(c,i*3); }
+ return lut; })();
+function toneData(d,mode){ for(let i=0;i<d.length;i+=4){ const l=(d[i]*.2126+d[i+1]*.7152+d[i+2]*.0722)|0;
+  if(mode==='labels'){ const g=Math.min(255,l*.85); d[i]=d[i+1]=d[i+2]=g; d[i+3]=d[i+3]*.45; }
+  else { d[i]=TONE[l*3]; d[i+1]=TONE[l*3+1]; d[i+2]=TONE[l*3+2]; } } }
+const ToneLayer=(window.L&&L.TileLayer)?L.TileLayer.extend({
+ createTile(coords,done){ const sz=this.getTileSize(), c=document.createElement('canvas'); c.width=sz.x; c.height=sz.y; const ctx=c.getContext('2d',{willReadFrequently:true});
+  const url=this.getTileUrl(coords), mode=this.options.tone;
+  const load=(cors)=>{ const img=new Image(); if(cors) img.crossOrigin='anonymous';
+   img.onload=()=>{ ctx.drawImage(img,0,0,sz.x,sz.y); let toned=false; if(cors){ try{ const id=ctx.getImageData(0,0,sz.x,sz.y); toneData(id.data,mode); ctx.putImageData(id,0,0); toned=true; }catch(e){} }
+    if(!toned&&mode==='labels') c.style.opacity=.45; done(null,c); };
+   img.onerror=()=>{ if(cors) load(false); else done(new Error('tile'),c); };
+   img.src=url; };
+  load(true); return c; }
+}):null;
+const tones=(url,opt)=>ToneLayer?new ToneLayer(url,opt):L.tileLayer(url,opt);
 const PIN_SVG='<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg>';
 function initLeaflet(){
  if(!window.L){ LMAP.mode='svg'; return; }
  LMAP.mode='pending';
  const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:19,zoomSnap:.5});
  m.attributionControl.setPrefix(false); m.attributionControl.setPosition('topright');
- const base=L.tileLayer(TILE,{...TOPT,className:'tiles-base',attribution:'Tiles © Esri — Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(m);
+ const base=tones(TILE,{...TOPT,tone:'base',className:'tiles-base',attribution:'Tiles © Esri — Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(m);
  m.createPane('labels'); m.getPane('labels').style.zIndex=450; m.getPane('labels').style.pointerEvents='none';
- L.tileLayer(LBL,{...TOPT,pane:'labels',className:'tiles-labels'}).addTo(m);
+ tones(LBL,{...TOPT,tone:'labels',pane:'labels',className:'tiles-labels'}).addTo(m);
  let ok=false; base.on('tileload',()=>{ if(!ok){ ok=true; LMAP.mode='leaflet'; if(UI.route==='map') render(); } });
  LMAP.isOk=()=>ok;
  m.on('click',()=>{ if(UI.selected&&!S.session){ UI.selected=null; render(); } });
@@ -603,7 +622,7 @@ function mountMinis(){
  if(LMAP.mode!=='leaflet') return;
  document.querySelectorAll('[data-mini]').forEach(el=>{ if(el._leaflet_id) return; const p=P(el.dataset.mini); const z=+el.dataset.zoom||15;
   const mm=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,tap:false}).setView([p.lat,p.lng],z);
-  L.tileLayer(TILE,{...TOPT,className:'tiles-base'}).addTo(mm); L.tileLayer(LBL,{...TOPT,className:'tiles-labels'}).addTo(mm);
+  tones(TILE,{...TOPT,tone:'base',className:'tiles-base'}).addTo(mm); tones(LBL,{...TOPT,tone:'labels',className:'tiles-labels'}).addTo(mm);
   if(el.dataset.oy){ mm.panBy([0,+el.dataset.oy*-1],{animate:false}); }
   LMAP.minis.push(mm); });
 }

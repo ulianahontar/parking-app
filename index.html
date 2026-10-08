@@ -32,7 +32,20 @@ input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--or);outline-offset:2px}
 .stage{height:100%;display:flex;align-items:center;justify-content:center;padding-inline:16px;padding-block:16px}
 .device{position:relative;width:393px;height:852px;max-height:calc(100% - 0px);border-radius:52px;overflow:hidden;background:var(--ink);box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #333,0 40px 120px rgba(0,0,0,.6);isolation:isolate}
-@media (max-width:520px),(max-height:700px){.stage{padding:0}.device{width:100%;height:100%;max-height:none;border-radius:0;box-shadow:none}}
+@media (max-width:520px),(max-height:700px),(display-mode:standalone){
+ html,body{background:#111;overscroll-behavior:none}
+ .stage{padding:0;height:100%;height:100dvh}
+ .device{width:100%;height:100%;max-height:none;border-radius:0;box-shadow:none}
+ .status{height:calc(env(safe-area-inset-top,0px) + 10px);padding:0;overflow:hidden}
+ .status>*{display:none!important}
+ .tabbar{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+ .with-tabs .scroll{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+ .foot{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+ .sheet{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+ .preview,.screen>.card[style*="bottom:104px"]{bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
+ .leaflet-bottom{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+ .toast{top:calc(env(safe-area-inset-top,0px) + 8px)}
+}
 .glow-a,.glow-b{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
 .glow-a{width:420px;height:340px;right:-150px;top:-170px;background:rgba(235,87,0,.75)}
 .glow-b{width:400px;height:380px;left:-40px;bottom:-260px;background:rgba(255,55,0,.55)}
@@ -65,7 +78,7 @@ input{font:inherit;color:inherit}
 .scroll::-webkit-scrollbar{display:none}
 .hdr{display:flex;align-items:center;gap:14px;padding:6px 16px 14px}
 .hdr h2{margin:0;font-size:17px;font-weight:600}
-.icon-btn{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);flex:none}
+.icon-btn{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.16);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);flex:none}
 .h1{font-family:var(--f-disp);font-weight:700;font-size:28px;letter-spacing:-.02em;line-height:1.15;margin:0;text-wrap:balance}
 .lead{color:var(--text);opacity:.6;line-height:1.45;margin:8px 0 0}
 .label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
@@ -74,7 +87,8 @@ input{font:inherit;color:inherit}
 .btn{height:52px;border-radius:26px;width:100%;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s, opacity .2s}
 .btn:active{transform:scale(.98)}
 .btn-primary{background:var(--grad);color:#111;box-shadow:0 8px 28px rgba(255,90,0,.28)}
-.btn-ghost{border:1px solid rgba(255,255,255,.18);color:var(--text)}
+.btn-ghost{border:1px solid rgba(255,255,255,.18);color:var(--text);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.01));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 1px rgba(255,255,255,.12)}
+.btn-primary{box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 8px 28px rgba(255,90,0,.28)}
 .btn[disabled]{opacity:.35;pointer-events:none}
 .foot{padding:12px 16px 26px;display:flex;flex-direction:column;gap:12px;flex:none;position:relative;z-index:3}
 .num{font-family:var(--f-disp);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -90,9 +104,9 @@ input{font:inherit;color:inherit}
 .seg button{flex:1;height:34px;border-radius:17px;font-size:13px;font-weight:600;color:var(--mute);transition:background .25s,color .25s}
 .seg button.on{background:var(--or);color:#111}
 /* tab bar */
-.tabbar{position:absolute;left:16px;right:16px;bottom:22px;height:68px;border-radius:34px;padding:4px;display:flex;gap:5px;background:rgba(28,28,28,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);z-index:20}
-.tab{height:60px;width:60px;flex:none;border-radius:30px;display:flex;align-items:center;justify-content:center;gap:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:#d0d0d0;transition:width .35s cubic-bezier(.3,.7,.2,1),background .35s,color .35s;overflow:hidden;white-space:nowrap}
-.tab.on{width:auto;flex:1;background:var(--grad);color:#111;border-color:transparent}
+.tabbar{position:absolute;left:16px;right:16px;bottom:22px;height:68px;border-radius:34px;padding:4px;display:flex;gap:5px;background:linear-gradient(180deg,rgba(60,60,60,.42),rgba(24,24,24,.55));backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 12px 32px rgba(0,0,0,.45);z-index:20}
+.tab{height:60px;width:60px;flex:none;border-radius:30px;display:flex;align-items:center;justify-content:center;gap:0;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.18),inset 0 -6px 12px rgba(0,0,0,.25);color:#d0d0d0;transition:width .35s cubic-bezier(.3,.7,.2,1),background .35s,color .35s;overflow:hidden;white-space:nowrap}
+.tab.on{width:auto;flex:1;background:var(--grad);color:#111;border-color:rgba(255,200,150,.35);box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 6px 18px rgba(255,90,0,.35)}
 .tab span{font-size:15px;font-weight:500;max-width:0;opacity:0;margin-left:0;transition:max-width .35s,opacity .25s,margin .35s}
 .tab.on span{max-width:90px;opacity:1;margin-left:8px}
 .tabbar{transition:transform .35s cubic-bezier(.2,.85,.25,1),opacity .25s}
@@ -108,13 +122,13 @@ input{font:inherit;color:inherit}
 .me{position:absolute;width:16px;height:16px;border-radius:50%;background:#4aa3ff;border:3px solid #fff;box-shadow:0 0 0 10px rgba(74,163,255,.18);transform:translate(-50%,-50%);z-index:2}
 .map-top{position:relative;z-index:4;padding:6px 16px 0;background:linear-gradient(#111 30%,rgba(17,17,17,0))}
 .search{display:flex;gap:10px;margin-top:14px}
-.search .box{flex:1;min-width:0;height:48px;border-radius:24px;background:rgba(28,28,28,.9);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;padding:0 16px}
+.search .box{flex:1;min-width:0;height:48px;border-radius:24px;background:linear-gradient(180deg,rgba(70,70,70,.5),rgba(28,28,28,.6));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.14);display:flex;align-items:center;gap:10px;padding:0 16px}
 .search input{background:none;border:0;outline:none;flex:1;min-width:0;font-size:14px}
-.round{width:48px;height:48px;border-radius:50%;background:rgba(28,28,28,.9);border:1px solid rgba(255,255,255,.1);display:grid;place-items:center;flex:none;position:relative}
+.round{width:48px;height:48px;border-radius:50%;background:linear-gradient(180deg,rgba(70,70,70,.55),rgba(28,28,28,.6));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.16);display:grid;place-items:center;flex:none;position:relative}
 .dot-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--or)}
-.preview{position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px;animation:up .3s ease-out;background:rgba(32,32,32,.94);backdrop-filter:blur(10px)}
+.preview{position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px;animation:up .3s ease-out;background:linear-gradient(180deg,rgba(60,60,60,.55),rgba(24,24,24,.72));backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
 @keyframes up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
-.session-card{margin:12px 16px 0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:6;background:rgba(32,32,32,.94)}
+.session-card{margin:12px 16px 0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:6;background:linear-gradient(180deg,rgba(60,60,60,.55),rgba(24,24,24,.72));backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
 .live{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok)}
 .live.warn{background:var(--or);box-shadow:0 0 12px var(--or)}
 .live.off{background:#777;box-shadow:none}
@@ -137,7 +151,7 @@ input{font:inherit;color:inherit}
 .toggle.on::after{left:21px;background:#111}
 input[type=range]{width:100%;accent-color:var(--or)}
 .stepper{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.step-btn{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#303030;border:1px solid rgba(255,255,255,.1);flex:none;color:#e6e6e6;line-height:0}
+.step-btn{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.16);flex:none;color:#e6e6e6;line-height:0}
 .step-btn svg{display:block}
 .step-btn.plus{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.3);color:var(--or)}
 .step-btn:disabled{opacity:.35}
@@ -202,7 +216,7 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .leaflet-control{pointer-events:auto}
 .leaflet-control-attribution{font-size:9px;background:rgba(0,0,0,.45);color:#8a8a8a;padding:1px 6px;border-radius:6px}
 .leaflet-control-attribution a{color:#b0b0b0;text-decoration:none}
-.tiles-base{filter:sepia(1) saturate(3.2) hue-rotate(-14deg) brightness(1.05) contrast(1.45)}
+.tiles-base{filter:sepia(1) saturate(2.6) hue-rotate(-12deg) brightness(1.2) contrast(1.35)}
 .tiles-labels{filter:brightness(.85)}
 .lpin{background:none;border:0}
 .lpin .pin{position:static;transform:none}
@@ -386,7 +400,7 @@ const SCREENS={
   const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label">Nearby · ${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div><div class="row" style="justify-content:space-between;margin-top:6px"><div><div class="num" style="font-size:24px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:2px">${p.name}, Lviv</div></div><div style="text-align:right"><span class="num or" style="font-size:24px">${money(p.rate)}</span><span class="hint"> /hr</span><div style="color:var(--red);font-size:12px;margin-top:4px">${p.spots} spots</div></div></div></button>`:'';
   const none = !filtered().length && st==='none' ? `<div class="card" style="position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px"><b>No parking matches</b><p class="hint" style="margin:6px 0 0">Change the filters or search to see more spots.</p></div>`:'';
   return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
- info(){ const p=P(UI.selected); return `<div class="screen"><div style="position:relative;height:250px;flex:none;overflow:hidden"><div class="mini" data-mini="${p.id}" data-zoom="16" data-oy="-15">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;left:${-(p.x-196)}px;top:${-(p.y-140)}px;width:900px;height:1200px"`)}</div><div style="position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(rgba(17,17,17,0),#111);z-index:401;pointer-events:none"></div><span style="position:absolute;right:8px;bottom:30px;z-index:402;font-size:9px;color:#777">© OpenStreetMap © CARTO</span><div style="position:absolute;left:50%;top:140px;transform:translate(-50%,-100%);z-index:403"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div><div style="position:absolute;top:0;left:0;right:0;z-index:404">${statusBar()}<div style="padding:4px 16px"><button class="icon-btn" style="background:rgba(17,17,17,.7)" data-a="back" aria-label="Back">${I.back}</button></div></div></div>
+ info(){ const p=P(UI.selected); return `<div class="screen"><div style="position:relative;height:250px;flex:none;overflow:hidden"><div class="mini" data-mini="${p.id}" data-zoom="16" data-oy="-15">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;left:${-(p.x-196)}px;top:${-(p.y-140)}px;width:900px;height:1200px"`)}</div><div style="position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(rgba(17,17,17,0),#111);z-index:401;pointer-events:none"></div><span style="position:absolute;right:8px;bottom:30px;z-index:402;font-size:9px;color:#777">© Esri © OpenStreetMap</span><div style="position:absolute;left:50%;top:140px;transform:translate(-50%,-100%);z-index:403"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div><div style="position:absolute;top:0;left:0;right:0;z-index:404">${statusBar()}<div style="padding:4px 16px"><button class="icon-btn" style="background:rgba(17,17,17,.7)" data-a="back" aria-label="Back">${I.back}</button></div></div></div>
   <div class="scroll" style="margin-top:-24px;position:relative;z-index:2"><div class="card" style="padding:20px">
    <div class="row" style="justify-content:space-between"><div><div class="num" style="font-size:30px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:4px">${p.name}, Lviv</div></div></div>
    <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><span class="badge" style="background:rgba(255,55,0,.14);color:var(--warn)">Open now</span><span class="badge" style="background:#303030;color:#bbb">${p.h24?'24/7 access':p.hours}</span><span class="badge" style="background:#303030;color:#bbb">${p.type[0].toUpperCase()+p.type.slice(1)}</span></div>
@@ -552,16 +566,17 @@ function toast(text,cls=''){ const el=$('#toast'); el.className='toast '+cls; el
 
 /* ---------- real map (Leaflet + OpenStreetMap/CARTO tiles) with offline fallback ---------- */
 const LMAP={mode:'svg',map:null,markers:{},me:null,lastSel:null,minis:[]};
-const TILE='https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', LBL='https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png';
+const TILE='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', LBL='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}';
+const TOPT={maxNativeZoom:16,maxZoom:19};
 const PIN_SVG='<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg>';
 function initLeaflet(){
  if(!window.L){ LMAP.mode='svg'; return; }
  LMAP.mode='pending';
- const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:18,zoomSnap:.5});
+ const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:19,zoomSnap:.5});
  m.attributionControl.setPrefix(false);
- const base=L.tileLayer(TILE,{subdomains:'abcd',maxZoom:20,className:'tiles-base',attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'}).addTo(m);
+ const base=L.tileLayer(TILE,{...TOPT,className:'tiles-base',attribution:'Tiles © Esri — Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(m);
  m.createPane('labels'); m.getPane('labels').style.zIndex=450; m.getPane('labels').style.pointerEvents='none';
- L.tileLayer(LBL,{subdomains:'abcd',maxZoom:20,pane:'labels',className:'tiles-labels'}).addTo(m);
+ L.tileLayer(LBL,{...TOPT,pane:'labels',className:'tiles-labels'}).addTo(m);
  let ok=false; base.on('tileload',()=>{ if(!ok){ ok=true; LMAP.mode='leaflet'; if(UI.route==='map') render(); } });
  LMAP.isOk=()=>ok;
  m.on('click',()=>{ if(UI.selected&&!S.session){ UI.selected=null; render(); } });
@@ -586,7 +601,7 @@ function mountMinis(){
  if(LMAP.mode!=='leaflet') return;
  document.querySelectorAll('[data-mini]').forEach(el=>{ if(el._leaflet_id) return; const p=P(el.dataset.mini); const z=+el.dataset.zoom||15;
   const mm=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,tap:false}).setView([p.lat,p.lng],z);
-  L.tileLayer(TILE,{subdomains:'abcd',className:'tiles-base'}).addTo(mm); L.tileLayer(LBL,{subdomains:'abcd',className:'tiles-labels'}).addTo(mm);
+  L.tileLayer(TILE,{...TOPT,className:'tiles-base'}).addTo(mm); L.tileLayer(LBL,{...TOPT,className:'tiles-labels'}).addTo(mm);
   if(el.dataset.oy){ mm.panBy([0,+el.dataset.oy*-1],{animate:false}); }
   LMAP.minis.push(mm); });
 }

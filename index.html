@@ -419,14 +419,14 @@ const SCREENS={
   <div style="padding:0 16px;flex:1"><h1 class="h1" style="font-size:34px">Parking made simple.</h1><p class="lead" style="font-size:16px">Find parking, start a session and pay — all in one place, in every supported city.</p></div>
   <div class="foot"><button class="btn btn-primary" data-a="go" data-v="signup">Create account</button><button class="btn btn-ghost" data-a="go" data-v="login">Log in</button></div></div>`; },
  signup(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Create account</h1><p class="lead">Enter your phone number to get started.</p>
-  <div class="field" style="margin-top:28px"><label for="phone">Phone number</label><input class="input" id="phone" inputmode="tel" value="${S.user.phone}" data-m="phone"></div></div>
+  <div class="field" style="margin-top:28px"><label for="phone">Phone number</label><input class="input" id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 67 123 4567" data-m="phone"></div></div>
   <div class="foot"><button class="btn btn-primary" data-a="go" data-v="otp">Continue</button><p style="text-align:center;margin:0;color:var(--mute);font-size:14px">Already have an account? <button class="link" data-a="go" data-v="login">Log in</button></p></div></div>`; },
  otp(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Verify phone number</h1><p class="lead">Enter the 6-digit code we sent to ${S.user.phone}${UI.otpFor==='reset'?' to reset your password':''}.</p>
   <div class="otp" style="margin-top:28px">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" pattern="[0-9]*" ${i===0?'autocomplete="one-time-code"':'autocomplete="off"'} maxlength="${i===0?6:1}" aria-label="Digit ${i+1}" data-otp="${i}">`).join('')}</div><p class="hint" style="margin-top:14px">Demo: any 6 digits work.</p></div>
   <div class="foot"><button class="btn btn-primary" id="otpGo" data-a="otpDone" disabled>Continue</button></div></div>`; },
  login(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Log in</h1><p class="lead">Welcome back. Enter your phone number and password.</p>
-  <div class="field" style="margin-top:28px"><label for="lphone">Phone number</label><input class="input" id="lphone" inputmode="tel" value="${S.user.phone}" data-m="phone"></div>
-  <div class="field" style="margin-top:18px"><label for="lpass">Password</label><input class="input" id="lpass" type="password" value="parking2026"></div><button class="link" style="margin-top:14px;font-size:14px" data-a="go" data-v="forgot">Forgot password?</button></div>
+  <div class="field" style="margin-top:28px"><label for="lphone">Phone number</label><input class="input" id="lphone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 67 123 4567" data-m="phone"></div>
+  <div class="field" style="margin-top:18px"><label for="lpass">Password</label><input class="input" id="lpass" type="password" autocomplete="current-password" placeholder="Enter your password"></div><button class="link" style="margin-top:14px;font-size:14px" data-a="go" data-v="forgot">Forgot password?</button></div>
   <div class="foot"><button class="btn btn-primary" data-a="loginDone">Log in</button><button class="btn btn-ghost" data-a="loginDone">Log in with Face ID</button></div></div>`; },
  location(){ return `<div class="screen" style="text-align:center">${statusBar()}<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px;gap:14px">
   <div style="width:140px;height:140px;border-radius:50%;background:rgba(255,107,0,.14);border:1px solid rgba(255,107,0,.35);display:grid;place-items:center;margin-bottom:18px"><svg width="46" height="60" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div>
@@ -737,7 +737,7 @@ const A={
 document.addEventListener('click',e=>{ const el=e.target.closest('[data-a]'); if(!el) return; const a=el.dataset.a; if(A[a]){ e.preventDefault(); A[a](el.dataset.v,el); } });
 document.addEventListener('input',e=>{ const t=e.target; if(t.classList.contains('err')){ t.classList.remove('err'); const fe=document.getElementById(t.id+'-err'); if(fe) fe.textContent=''; }
  if(t.dataset.m==='search'){ UI.search=t.value; UI.selected=null; render(); }
- else if(t.dataset.m==='phone'){ S.user.phone=t.value; save(); }
+ else if(t.dataset.m==='phone'){ S.user.phone=t.value.trim()||DEFAULTS.user.phone; save(); }
  else if(t.dataset.m==='price'){ S.filters.maxPrice=+t.value; save(); const pv=$('#pval'); if(pv) pv.textContent=money(+t.value)+'/hr'; const b=document.querySelector('.sheet .btn-primary'); if(b) b.textContent=`Show ${filtered().length} parkings`; }
  else if(t.dataset.otp){ const d=t.value.replace(/\D/g,''); const i=+t.dataset.otp;
   if(d.length>2){ [...d].slice(0,6-i).forEach((c,j)=>{ $('#otp'+(i+j)).value=c; }); } else t.value=d.slice(-1);

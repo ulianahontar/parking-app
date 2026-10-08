@@ -43,7 +43,7 @@ input{font:inherit;color:inherit}
  .foot{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
  .sheet{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
  .preview,.screen>.card[style*="bottom:104px"]{bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
- .leaflet-bottom{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+ .leaflet-top{top:calc(env(safe-area-inset-top,0px) + 132px)}
  .toast{top:calc(env(safe-area-inset-top,0px) + 8px)}
 }
 .glow-a,.glow-b{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
@@ -120,7 +120,9 @@ input{font:inherit;color:inherit}
 .pin.sel{width:auto;height:auto;background:none;border:0;transform:translate(-50%,-100%)}
 .pin.dim{opacity:.25;pointer-events:none}
 .me{position:absolute;width:16px;height:16px;border-radius:50%;background:#4aa3ff;border:3px solid #fff;box-shadow:0 0 0 10px rgba(74,163,255,.18);transform:translate(-50%,-50%);z-index:2}
-.map-top{position:relative;z-index:4;padding:6px 16px 0;background:linear-gradient(#111 30%,rgba(17,17,17,0))}
+.map-top{position:relative;z-index:4;padding:6px 16px 0}
+.map-glow{position:absolute!important;left:0;right:0;top:0;height:320px;pointer-events:none!important;z-index:1;background:radial-gradient(110% 80% at 95% -10%,rgba(235,87,0,.6),rgba(235,87,0,0) 62%),linear-gradient(180deg,rgba(17,17,17,.96) 0%,rgba(17,17,17,.7) 38%,rgba(17,17,17,0) 100%)}
+.map-glow.b{top:auto;bottom:0;height:260px;background:radial-gradient(90% 70% at 15% 115%,rgba(255,55,0,.45),rgba(255,55,0,0) 65%)}
 .search{display:flex;gap:10px;margin-top:14px}
 .search .box{flex:1;min-width:0;height:48px;border-radius:24px;background:linear-gradient(180deg,rgba(70,70,70,.5),rgba(28,28,28,.6));backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.14);display:flex;align-items:center;gap:10px;padding:0 16px}
 .search input{background:none;border:0;outline:none;flex:1;min-width:0;font-size:14px}
@@ -199,7 +201,7 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .scrim.closing{animation:fadeOut .24s forwards}
 @keyframes sheetOut{to{transform:translateY(100%)}}
 /* leaflet (essential subset of leaflet.css) */
-.lmap{position:absolute;inset:0;z-index:0;background:#141210;display:none}
+.lmap{position:absolute;inset:0;z-index:0;background:#0d0d0d;display:none}
 .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
 .leaflet-container{overflow:hidden;touch-action:none;-webkit-tap-highlight-color:transparent;font-family:var(--f-body);outline:none}
 .leaflet-tile,.leaflet-marker-icon{user-select:none;-webkit-user-drag:none}
@@ -212,21 +214,21 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .leaflet-grab{cursor:grab}.leaflet-dragging .leaflet-grab{cursor:grabbing}
 .leaflet-marker-icon{display:block}.leaflet-interactive{cursor:pointer}
 .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
-.leaflet-bottom{bottom:96px}.leaflet-right{right:8px}
+.leaflet-bottom{bottom:96px}.leaflet-right{right:8px}.leaflet-top{top:150px}
 .leaflet-control{pointer-events:auto}
 .leaflet-control-attribution{font-size:9px;background:rgba(0,0,0,.45);color:#8a8a8a;padding:1px 6px;border-radius:6px}
 .leaflet-control-attribution a{color:#b0b0b0;text-decoration:none}
-.tiles-base{filter:sepia(1) saturate(2.6) hue-rotate(-12deg) brightness(1.2) contrast(1.35)}
-.tiles-labels{filter:brightness(.85)}
+.tiles-base{filter:url(#maptone)}
+.tiles-labels{filter:grayscale(1) brightness(.75);opacity:.4}
 .lpin{background:none;border:0}
 .lpin .pin{position:static;transform:none}
-.mini{position:absolute;inset:0;overflow:hidden;background:#141210}
+.mini{position:absolute;inset:0;overflow:hidden;background:#0d0d0d}
 .mini .leaflet-container{background:#141210}
 </style>
 
 </head>
 <body>
-<div class="stage"><div class="device" id="device"><div id="lmap" class="lmap"></div><div id="screens"></div><nav class="tabbar hidden" id="tabs" aria-label="Main"></nav><div id="overlay"></div><div class="toast" id="toast"><span class="tick"></span><span></span></div></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="maptone" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values=".2126 .7152 .0722 0 0 .2126 .7152 .0722 0 0 .2126 .7152 .0722 0 0 0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.073 0.118 0.118 0.118 0.118 0.195 0.349 0.504 0.658 0.813 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890 0.890"/><feFuncG type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.073 0.118 0.118 0.118 0.118 0.167 0.266 0.365 0.464 0.562 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612 0.612"/><feFuncB type="table" tableValues="0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.051 0.075 0.122 0.122 0.122 0.122 0.148 0.202 0.255 0.308 0.362 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388 0.388"/></feComponentTransfer></filter></svg><div class="stage"><div class="device" id="device"><div id="lmap" class="lmap"></div><div id="screens"></div><nav class="tabbar hidden" id="tabs" aria-label="Main"></nav><div id="overlay"></div><div class="toast" id="toast"><span class="tick"></span><span></span></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
@@ -399,7 +401,7 @@ const SCREENS={
    `<div class="map-top"><h1 class="h1" style="font-size:22px">Where do you want to park?</h1><div class="search"><label class="box"><span>${I.search}</span><input id="q" placeholder="Search for a location..." value="${UI.search}" data-m="search" aria-label="Search"></label><button class="round" data-a="sheet" data-v="filters" aria-label="Filters">${I.filter}${filtersOn()?'<i class="dot-badge"></i>':''}</button><button class="round" data-a="go" data-v="notifications" aria-label="Notifications" style="color:#f4f5f2">${I.bell}${S.notifs.some(n=>!n.read)?'<i class="dot-badge"></i>':''}</button></div>${UI.search.trim()?resultsHTML():''}</div>`;
   const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label">Nearby · ${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div><div class="row" style="justify-content:space-between;margin-top:6px"><div><div class="num" style="font-size:24px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:2px">${p.name}, Lviv</div></div><div style="text-align:right"><span class="num or" style="font-size:24px">${money(p.rate)}</span><span class="hint"> /hr</span><div style="color:var(--red);font-size:12px;margin-top:4px">${p.spots} spots</div></div></div></button>`:'';
   const none = !filtered().length && st==='none' ? `<div class="card" style="position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px"><b>No parking matches</b><p class="hint" style="margin:6px 0 0">Change the filters or search to see more spots.</p></div>`:'';
-  return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
+  return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div class="map-glow"></div><div class="map-glow b"></div><div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
  info(){ const p=P(UI.selected); return `<div class="screen"><div style="position:relative;height:250px;flex:none;overflow:hidden"><div class="mini" data-mini="${p.id}" data-zoom="16" data-oy="-15">${MAP_SVG.replace('class="base"',`class="base" style="position:absolute;left:${-(p.x-196)}px;top:${-(p.y-140)}px;width:900px;height:1200px"`)}</div><div style="position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(rgba(17,17,17,0),#111);z-index:401;pointer-events:none"></div><span style="position:absolute;right:8px;bottom:30px;z-index:402;font-size:9px;color:#777">© Esri © OpenStreetMap</span><div style="position:absolute;left:50%;top:140px;transform:translate(-50%,-100%);z-index:403"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div><div style="position:absolute;top:0;left:0;right:0;z-index:404">${statusBar()}<div style="padding:4px 16px"><button class="icon-btn" style="background:rgba(17,17,17,.7)" data-a="back" aria-label="Back">${I.back}</button></div></div></div>
   <div class="scroll" style="margin-top:-24px;position:relative;z-index:2"><div class="card" style="padding:20px">
    <div class="row" style="justify-content:space-between"><div><div class="num" style="font-size:30px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:4px">${p.name}, Lviv</div></div></div>
@@ -573,7 +575,7 @@ function initLeaflet(){
  if(!window.L){ LMAP.mode='svg'; return; }
  LMAP.mode='pending';
  const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:19,zoomSnap:.5});
- m.attributionControl.setPrefix(false);
+ m.attributionControl.setPrefix(false); m.attributionControl.setPosition('topright');
  const base=L.tileLayer(TILE,{...TOPT,className:'tiles-base',attribution:'Tiles © Esri — Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(m);
  m.createPane('labels'); m.getPane('labels').style.zIndex=450; m.getPane('labels').style.pointerEvents='none';
  L.tileLayer(LBL,{...TOPT,pane:'labels',className:'tiles-labels'}).addTo(m);

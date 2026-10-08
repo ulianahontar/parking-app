@@ -403,7 +403,7 @@ const SCREENS={
   <div class="field" style="margin-top:28px"><label for="phone">Phone number</label><input class="input" id="phone" inputmode="tel" value="${S.user.phone}" data-m="phone"></div></div>
   <div class="foot"><button class="btn btn-primary" data-a="go" data-v="otp">Continue</button><p style="text-align:center;margin:0;color:var(--mute);font-size:14px">Already have an account? <button class="link" data-a="go" data-v="login">Log in</button></p></div></div>`; },
  otp(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Verify phone number</h1><p class="lead">Enter the 6-digit code we sent to ${S.user.phone}${UI.otpFor==='reset'?' to reset your password':''}.</p>
-  <div class="otp" style="margin-top:28px">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" maxlength="1" aria-label="Digit ${i+1}" data-otp="${i}">`).join('')}</div><p class="hint" style="margin-top:14px">Demo: any 6 digits work.</p></div>
+  <div class="otp" style="margin-top:28px">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" pattern="[0-9]*" ${i===0?'autocomplete="one-time-code"':'autocomplete="off"'} maxlength="${i===0?6:1}" aria-label="Digit ${i+1}" data-otp="${i}">`).join('')}</div><p class="hint" style="margin-top:14px">Demo: any 6 digits work.</p></div>
   <div class="foot"><button class="btn btn-primary" id="otpGo" data-a="otpDone" disabled>Continue</button></div></div>`; },
  login(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Log in</h1><p class="lead">Welcome back. Enter your phone number and password.</p>
   <div class="field" style="margin-top:28px"><label for="lphone">Phone number</label><input class="input" id="lphone" inputmode="tel" value="${S.user.phone}" data-m="phone"></div>
@@ -720,7 +720,11 @@ document.addEventListener('input',e=>{ const t=e.target; if(t.classList.contains
  if(t.dataset.m==='search'){ UI.search=t.value; UI.selected=null; render(); }
  else if(t.dataset.m==='phone'){ S.user.phone=t.value; save(); }
  else if(t.dataset.m==='price'){ S.filters.maxPrice=+t.value; save(); const pv=$('#pval'); if(pv) pv.textContent=money(+t.value)+'/hr'; const b=document.querySelector('.sheet .btn-primary'); if(b) b.textContent=`Show ${filtered().length} parkings`; }
- else if(t.dataset.otp){ t.value=t.value.replace(/\D/g,'').slice(-1); const i=+t.dataset.otp; if(t.value&&i<5) $('#otp'+(i+1)).focus(); const all=[0,1,2,3,4,5].every(k=>$('#otp'+k).value); $('#otpGo').disabled=!all; }
+ else if(t.dataset.otp){ const d=t.value.replace(/\D/g,''); const i=+t.dataset.otp;
+  if(d.length>2){ [...d].slice(0,6-i).forEach((c,j)=>{ $('#otp'+(i+j)).value=c; }); } else t.value=d.slice(-1);
+  const all=[0,1,2,3,4,5].every(k=>$('#otp'+k).value); $('#otpGo').disabled=!all;
+  if(all){ t.blur(); document.activeElement&&document.activeElement.blur&&document.activeElement.blur(); }
+  else if(t.value){ const nx=[0,1,2,3,4,5].find(k=>k>i&&!$('#otp'+k).value); if(nx!==undefined) $('#otp'+nx).focus(); } }
  else if(t.dataset.card){ t.value=t.value.replace(/\D/g,'').slice(0,16).replace(/(\d{4})(?=\d)/g,'$1 '); }
  else if(t.dataset.exp){ let d=t.value.replace(/\D/g,'').slice(0,4); if(d.length===1&&+d>1) d='0'+d; const back=e.inputType==='deleteContentBackward'; t.value = d.length>2 ? d.slice(0,2)+' / '+d.slice(2) : (d.length===2&&!back ? d+' / ' : d); }
  else if(t.dataset.cvv){ t.value=t.value.replace(/\D/g,'').slice(0,4); }

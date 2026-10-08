@@ -776,7 +776,8 @@ setInterval(()=>{
 /* ---------- boot ---------- */
 initLeaflet();
 render();
-setTimeout(()=>{ UI.route=S.authed? (S.onboarded?(S.session&&!S.session.ended?'active':'map'):'location') : 'welcome'; render('fade'); },1700);
+/* every launch: splash -> welcome (log in again; saved vehicles, cards and history are kept) */
+setTimeout(()=>{ S.authed=false; save(); UI.stack=[]; UI.route='welcome'; render('fade'); },1700);
 </script>
 
 </body>

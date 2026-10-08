@@ -249,7 +249,7 @@ const DEFAULTS={
  authed:false,onboarded:false,user:{name:'Jane Doe',phone:'+380 67 123 4567'},
  vehicles:[{id:'v1',plate:'BC 0001 BC',model:'Tesla Model 3',color:'White'},{id:'v2',plate:'HH 0001 HH',model:'Porsche Panamera',color:'Black'}],vehicleId:'v1',
  cards:[{id:'c1',brand:'Visa',last4:'4242',exp:'08/28'},{id:'c2',brand:'Mastercard',last4:'1881',exp:'11/27'}],cardId:'c1',
- filters:{maxPrice:100,distance:'any',type:'all',ev:false,access:false,h24:false},
+ filters:{maxPrice:100,distance:['300','500','1000','2000','2000+'],type:['open','covered','underground'],ev:false,access:false,h24:false},
  setup:{mode:'hourly',hours:2,days:1},
  session:null,
  history:[
@@ -267,6 +267,7 @@ const DEFAULTS={
 let S;
 try{ S=JSON.parse(localStorage.getItem('parking-app-v1')||'null'); }catch(e){ S=null; }
 if(!S) S=JSON.parse(JSON.stringify(DEFAULTS));
+if(!S.filters||!Array.isArray(S.filters.distance)||!Array.isArray(S.filters.type)){ const o=S.filters||{}; S.filters=JSON.parse(JSON.stringify(DEFAULTS.filters)); ['maxPrice','ev','access','h24'].forEach(k=>{ if(k in o) S.filters[k]=o[k]; }); }
 if(!S.settings) S.settings=JSON.parse(JSON.stringify(DEFAULTS.settings)); if(!S.notifs) S.notifs=JSON.parse(JSON.stringify(DEFAULTS.notifs));
 const UI={banner:null,otpFor:'signup',route:'splash',stack:[],sheet:null,selected:null,search:'',fineTab:'unpaid',fineId:null,receiptId:null,toast:null,pay:null};
 function save(){ try{ localStorage.setItem('parking-app-v1',JSON.stringify(S)); }catch(e){} }
@@ -349,9 +350,12 @@ function mapHTML(){
  return `<div class="map" id="map"><div id="mapLayer" style="position:absolute;inset:0;transform:translate(${UI.pan?.x||0}px,${UI.pan?.y||0}px)">${MAP_SVG}${pins}<div class="me" style="left:calc(50% + ${ME.x-450+MAPOFF.x}px);top:calc(50% + ${ME.y-600+MAPOFF.y}px)"></div></div></div>`;
 }
 function resultsHTML(){ const r=filtered().slice().sort((a,b)=>a.dist-b.dist); return `<div class="card" style="margin-top:10px;max-height:330px;overflow-y:auto;background:rgba(30,30,30,.97)">${r.length?`<div class="label" style="padding:14px 18px 6px">${r.length} result${r.length>1?'s':''}</div>`+r.map(p=>`<button class="row" style="width:100%;text-align:left;padding:12px 18px;border-top:1px solid var(--line)" data-a="pickResult" data-v="${p.id}">${I.pinS}<div style="flex:1;min-width:0"><div style="font-weight:600">${p.id} · ${p.name}</div><div class="hint">${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'} · ${p.spots} spots · ${p.h24?'24/7':p.hours}</div></div><span class="num or" style="font-size:16px">${money(p.rate)}<span class="hint">/hr</span></span></button>`).join(''):`<div class="empty" style="padding:22px">Nothing found for “${UI.search}”. Try a street or a code like B1001.</div>`}</div>`; }
+const FOPTS={distance:['300','500','1000','2000','2000+'],type:['open','covered','underground']};
+const distBand=d=>d<300?'300':d<=500?'500':d<=1000?'1000':d<=2000?'2000':'2000+';
+const allOn=k=>FOPTS[k].every(v=>S.filters[k].includes(v));
 function filtered(){ const f=S.filters, q=UI.search.trim().toLowerCase();
- return PARKINGS.filter(p=>p.rate<=f.maxPrice && (f.distance==='any'||p.dist<=+f.distance) && (f.type==='all'||p.type===f.type) && (!f.ev||p.ev)&&(!f.access||p.access)&&(!f.h24||p.h24) && (!q||(p.name+' '+p.id).toLowerCase().includes(q))); }
-const filtersOn=()=>{const f=S.filters; return f.maxPrice<100||f.distance!=='any'||f.type!=='all'||f.ev||f.access||f.h24;};
+ return PARKINGS.filter(p=>p.rate<=f.maxPrice && f.distance.includes(distBand(p.dist)) && f.type.includes(p.type) && (!f.ev||p.ev)&&(!f.access||p.access)&&(!f.h24||p.h24) && (!q||(p.name+' '+p.id).toLowerCase().includes(q))); }
+const filtersOn=()=>{const f=S.filters; return f.maxPrice<100||!allOn('distance')||!allOn('type')||f.ev||f.access||f.h24;};
 
 /* ---------- tab bar ---------- */
 function tabs(cur){
@@ -491,11 +495,11 @@ const SCREENS={
 
 /* ---------- sheets ---------- */
 const SHEETS={
- filters(){ const f=S.filters; const chip=(k,v,l)=>`<button class="chip ${f[k]===v?'on':''}" data-a="filt" data-k="${k}" data-v="${v}">${l}</button>`; const tg=(k,l)=>`<div class="row" style="justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)"><span style="font-weight:500">${l}</span><button class="toggle ${f[k]?'on':''}" data-a="filtT" data-k="${k}" aria-label="${l}" aria-pressed="${f[k]}"></button></div>`;
+ filters(){ const f=S.filters; const chip=(k,v,l)=>{ const on=v==='*'?allOn(k):f[k].includes(v); return `<button class="chip ${on?'on':''}" data-a="filt" data-k="${k}" data-v="${v}" aria-pressed="${on}">${l}</button>`; }; const tg=(k,l)=>`<div class="row" style="justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)"><span style="font-weight:500">${l}</span><button class="toggle ${f[k]?'on':''}" data-a="filtT" data-k="${k}" aria-label="${l}" aria-pressed="${f[k]}"></button></div>`;
   return `<div class="row" style="justify-content:space-between"><h3>Filters</h3><button class="link" data-a="filtReset">Reset</button></div>
   <div class="row" style="justify-content:space-between;margin-top:22px"><span class="label">Max price per hour</span><span class="num or" style="font-size:16px" id="pval">${money(f.maxPrice)}/hr</span></div><input type="range" id="price" min="20" max="100" step="5" value="${f.maxPrice}" data-m="price" style="margin-top:12px" aria-label="Max price per hour"><div class="row hint" style="justify-content:space-between"><span>₴20</span><span>₴100</span></div>
-  <div class="label" style="margin:20px 0 10px">Distance</div><div class="row" style="flex-wrap:wrap;gap:6px">${chip('distance','300','< 300 m')}${chip('distance','500','< 500 m')}${chip('distance','1000','< 1 km')}${chip('distance','2000','< 2 km')}${chip('distance','any','Any')}</div>
-  <div class="label" style="margin:20px 0 10px">Parking type</div><div class="row" style="flex-wrap:wrap;gap:6px">${chip('type','all','All types')}${chip('type','open','Open air')}${chip('type','covered','Covered')}${chip('type','underground','Underground')}</div>
+  <div class="label" style="margin:20px 0 10px">Distance</div><div class="row" style="flex-wrap:wrap;gap:6px">${chip('distance','*','Any')}${chip('distance','300','< 300 m')}${chip('distance','500','300–500 m')}${chip('distance','1000','0.5–1 km')}${chip('distance','2000','1–2 km')}${chip('distance','2000+','2 km +')}</div>
+  <div class="label" style="margin:20px 0 10px">Parking type</div><div class="row" style="flex-wrap:wrap;gap:6px">${chip('type','*','All types')}${chip('type','open','Open air')}${chip('type','covered','Covered')}${chip('type','underground','Underground')}</div>
   <div class="label" style="margin:20px 0 2px">Amenities</div>${tg('ev','EV charging')}${tg('access','Accessible parking')}${tg('h24','24/7 access')}
   <button class="btn btn-primary" style="margin-top:22px" data-a="close">Show ${filtered().length} parkings</button>`; },
  vehicle(){ return `<div class="row" style="justify-content:space-between"><h3>Select vehicle</h3><button class="x" data-a="close" aria-label="Close">${I.x}</button></div><div class="list" style="margin-top:18px">${S.vehicles.map(v=>`<button class="opt ${v.id===S.vehicleId?'on':''}" data-a="pickVehicle" data-v="${v.id}" data-close="1"><span style="color:var(--red)">${I.car}</span><div><div style="font-weight:600">${v.plate}</div><div class="hint">${v.model} · ${v.color}</div></div><span class="radio"></span></button>`).join('')}
@@ -678,7 +682,10 @@ const A={
  askDel:(v,el)=>{ UI.del={kind:el.dataset.k,id:v}; UI.sheet='confirmDel'; render(); },
  doDel:()=>{ const d=UI.del; if(d.kind==='vehicle'){ const v=S.vehicles.find(x=>x.id===d.id); S.vehicles=S.vehicles.filter(x=>x.id!==d.id); if(S.vehicleId===d.id) S.vehicleId=S.vehicles[0]?.id||null; save(); closeSheet(()=>{ render(); toast(`${v.plate} deleted`); }); }
   else { const c=S.cards.find(x=>x.id===d.id); S.cards=S.cards.filter(x=>x.id!==d.id); if(S.cardId===d.id) S.cardId=S.cards[0]?.id||null; save(); closeSheet(()=>{ render(); toast(`${cardLabel(c)} removed`); }); } },
- filt:(v,el)=>{ S.filters[el.dataset.k]=v; save(); render(); },
+ filt:(v,el)=>{ const k=el.dataset.k; let cur=S.filters[k];
+  if(v==='*') cur=FOPTS[k].slice();
+  else { cur=cur.includes(v)?cur.filter(x=>x!==v):cur.concat(v); if(!cur.length) cur=FOPTS[k].slice(); }
+  S.filters[k]=FOPTS[k].filter(x=>cur.includes(x)); save(); render(); },
  filtT:(v,el)=>{ const k=el.dataset.k; S.filters[k]=!S.filters[k]; save(); render(); },
  filtReset:()=>{ S.filters=JSON.parse(JSON.stringify(DEFAULTS.filters)); save(); render(); },
  speed:(v)=>setSpeed(+v),

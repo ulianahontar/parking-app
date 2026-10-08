@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#111111">
 <meta name="description" content="PARKING — find, pay for and control city parking in Lviv. Portfolio demo by Uliana Hontar.">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -211,6 +211,9 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .leaflet-zoom-animated{transform-origin:0 0}
 .leaflet-zoom-anim .leaflet-zoom-animated{transition:transform .25s cubic-bezier(0,0,.25,1)}
 .leaflet-zoom-anim .leaflet-tile,.leaflet-pan-anim .leaflet-tile{transition:none}
+.leaflet-zoom-anim .leaflet-zoom-animated{will-change:transform}.leaflet-fade-anim .leaflet-tile{will-change:opacity}
+.leaflet-zoom-anim .leaflet-zoom-hide{visibility:hidden}.leaflet-tile-container{pointer-events:none}
+.leaflet-container canvas.leaflet-tile{max-width:none!important;max-height:none!important}
 .leaflet-grab{cursor:grab}.leaflet-dragging .leaflet-grab{cursor:grabbing}
 .leaflet-marker-icon{display:block}.leaflet-interactive{cursor:pointer}
 .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
@@ -567,7 +570,7 @@ function toast(text,cls=''){ const el=$('#toast'); el.className='toast '+cls; el
 /* ---------- real map (Leaflet + OpenStreetMap/CARTO tiles) with offline fallback ---------- */
 const LMAP={mode:'svg',map:null,markers:{},me:null,lastSel:null,minis:[]};
 const TILE='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', LBL='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}';
-const TOPT={maxNativeZoom:16,maxZoom:19};
+const TOPT={maxNativeZoom:16,maxZoom:18,updateWhenZooming:false,keepBuffer:3};
 /* Recolor tiles pixel-by-pixel on canvas (CSS/SVG filters differ per browser; Safari skips them on moving tiles) */
 const TONE=(()=>{ const bg=[13,13,13], bd=[30,30,31], rd=[227,156,99]; const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
  const lut=new Uint8ClampedArray(256*3);
@@ -578,11 +581,14 @@ const TONE=(()=>{ const bg=[13,13,13], bd=[30,30,31], rd=[227,156,99]; const mix
 function toneData(d,mode){ for(let i=0;i<d.length;i+=4){ const l=(d[i]*.2126+d[i+1]*.7152+d[i+2]*.0722)|0;
   if(mode==='labels'){ const g=Math.min(255,l*.85); d[i]=d[i+1]=d[i+2]=g; d[i+3]=d[i+3]*.45; }
   else { d[i]=TONE[l*3]; d[i+1]=TONE[l*3+1]; d[i+2]=TONE[l*3+2]; } } }
+let SCR=null; function scratch(sz){ if(!SCR){ const c=document.createElement('canvas'); c.width=sz.x; c.height=sz.y; SCR={c,ctx:c.getContext('2d',{willReadFrequently:true})}; } return SCR; }
 const ToneLayer=(window.L&&L.TileLayer)?L.TileLayer.extend({
- createTile(coords,done){ const sz=this.getTileSize(), c=document.createElement('canvas'); c.width=sz.x; c.height=sz.y; const ctx=c.getContext('2d',{willReadFrequently:true});
+ onAdd(map){ L.TileLayer.prototype.onAdd.call(this,map); this.on('tileunload',e=>{ if(e.tile&&e.tile.getContext){ e.tile.width=e.tile.height=0; } }); },
+ createTile(coords,done){ const sz=this.getTileSize(), c=document.createElement('canvas'); c.width=sz.x; c.height=sz.y; const ctx=c.getContext('2d');
   const url=this.getTileUrl(coords), mode=this.options.tone;
   const load=(cors)=>{ const img=new Image(); if(cors) img.crossOrigin='anonymous';
-   img.onload=()=>{ ctx.drawImage(img,0,0,sz.x,sz.y); let toned=false; if(cors){ try{ const id=ctx.getImageData(0,0,sz.x,sz.y); toneData(id.data,mode); ctx.putImageData(id,0,0); toned=true; }catch(e){} }
+   img.onload=()=>{ let toned=false; if(cors){ try{ const sc=scratch(sz); sc.ctx.clearRect(0,0,sz.x,sz.y); sc.ctx.drawImage(img,0,0,sz.x,sz.y); const id=sc.ctx.getImageData(0,0,sz.x,sz.y); toneData(id.data,mode); sc.ctx.putImageData(id,0,0); ctx.drawImage(sc.c,0,0); toned=true; }catch(e){} }
+    if(!toned) ctx.drawImage(img,0,0,sz.x,sz.y);
     if(!toned&&mode==='labels') c.style.opacity=.45; done(null,c); };
    img.onerror=()=>{ if(cors) load(false); else done(new Error('tile'),c); };
    img.src=url; };
@@ -590,10 +596,11 @@ const ToneLayer=(window.L&&L.TileLayer)?L.TileLayer.extend({
 }):null;
 const tones=(url,opt)=>ToneLayer?new ToneLayer(url,opt):L.tileLayer(url,opt);
 const PIN_SVG='<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg>';
+['gesturestart','gesturechange'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 function initLeaflet(){
  if(!window.L){ LMAP.mode='svg'; return; }
  LMAP.mode='pending';
- const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:19,zoomSnap:.5});
+ const m=L.map('lmap',{zoomControl:false,attributionControl:true,center:[ME.lat,ME.lng+0.002],zoom:15,minZoom:12,maxZoom:18,zoomSnap:.5,bounceAtZoomLimits:false,wheelPxPerZoomLevel:90});
  m.attributionControl.setPrefix(false); m.attributionControl.setPosition('topright');
  const base=tones(TILE,{...TOPT,tone:'base',className:'tiles-base',attribution:'Tiles © Esri — Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(m);
  m.createPane('labels'); m.getPane('labels').style.zIndex=450; m.getPane('labels').style.pointerEvents='none';

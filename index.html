@@ -30,9 +30,9 @@ body{background:#070707;color:var(--text);font-family:var(--f-body);font-size:15
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--or);outline-offset:2px}
-.stage{height:100%;display:flex;align-items:center;justify-content:center;padding-inline:16px;padding-block:16px}
-.device{position:relative;width:393px;height:852px;max-height:calc(100% - 0px);border-radius:52px;overflow:hidden;background:var(--ink);box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #333,0 40px 120px rgba(0,0,0,.6);isolation:isolate}
-@media (max-width:520px),(max-height:700px),(display-mode:standalone){
+.stage{height:100%;display:flex;align-items:center;justify-content:center;padding-inline:16px;padding-block:16px;overflow:hidden}
+.device{position:relative;width:393px;height:852px;flex:none;transform:scale(var(--fit,1));transform-origin:center;border-radius:52px;overflow:hidden;background:var(--ink);box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #333,0 40px 120px rgba(0,0,0,.6);isolation:isolate}
+@media (max-width:520px),(display-mode:standalone){
  html,body{background:#111;overscroll-behavior:none}
  .device::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46px;z-index:2;pointer-events:none;background:linear-gradient(rgba(17,17,17,0),#111)}
  html.sheet-open,html.sheet-open body{background:#232323}
@@ -323,6 +323,61 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .input:focus,.otp input:focus{border-color:rgba(255,255,255,.4)}
 .endpill{margin-left:auto;font-size:13px;font-weight:500;padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.16);color:var(--text)}
 .ua{overflow:visible}
+
+/* scroll: visible thin scrollbar on desktop, content fades out under the tab bar */
+@media (pointer:fine){.scroll{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}.scroll::-webkit-scrollbar{display:block;width:6px}.scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}}
+.with-tabs .scroll{-webkit-mask-image:linear-gradient(#000 calc(100% - 150px),transparent calc(100% - 96px));mask-image:linear-gradient(#000 calc(100% - 150px),transparent calc(100% - 96px))}
+
+/* ---------- Figma-matched components ---------- */
+.ttl{font-family:var(--f-disp);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:0;padding:27px 16px 16px;margin:0;flex:none}
+.bhdr{display:flex;align-items:center;gap:12px;padding:10px 16px 14px;flex:none}
+.bhdr h2{margin:0;font-family:var(--f-disp);font-weight:600;font-size:16px}
+.backc{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
+.fc{background:rgba(36,36,36,.9);border-radius:28px;padding:20px}
+.rws{display:flex;flex-direction:column;gap:14px}
+.rw{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px}.rw>span:first-child{color:#999}.rw>span:last-child{font-weight:500;text-align:right}
+.rw.big>span:last-child{font-family:var(--f-disp);font-weight:700;font-size:20px}
+.hr{height:1px;background:rgba(255,255,255,.06)}
+.lab{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#777;margin:0 0 10px}
+.pico{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);display:grid;place-items:center;font-family:var(--f-disp);font-weight:700;font-size:16px;flex:none}
+.hitem{display:flex;align-items:center;gap:12px;padding:12px 0;width:100%;text-align:left}
+.hitem+.hitem{border-top:1px solid rgba(255,255,255,.06)}
+.fcard{display:flex;flex-direction:column;gap:10px;width:100%;text-align:left}.fcard.dim{opacity:.6}
+.tag{display:inline-flex;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.tag.red{color:var(--urgent);background:rgba(255,69,58,.12);border:1px solid rgba(255,69,58,.3)}
+.tag.green{color:var(--ok);background:rgba(52,199,89,.12);border:1px solid rgba(52,199,89,.3)}
+.alert{display:flex;gap:12px;align-items:center;padding:14px;border-radius:20px;background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.25);font-size:13px;line-height:18px}
+.h26{font-family:var(--f-disp);font-weight:700;font-size:26px;letter-spacing:-.01em;margin:0;line-height:1.2}
+.sub{font-size:15px;color:#bbb;line-height:22px;margin:8px 0 0}
+.fld{display:flex;flex-direction:column;gap:8px}.fld label{font-size:12px;font-weight:500;color:#999}
+.inbox{display:flex;align-items:center;gap:12px;background:rgba(36,36,36,.9);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:0 16px;height:56px}
+.inbox:focus-within{border-color:rgba(255,255,255,.3)}.inbox.err{border-color:var(--urgent)}
+.inbox input{flex:1;min-width:0;background:none;border:0;outline:none;font-size:16px;font-weight:500;height:100%}
+.inbox .pre{font-size:16px;font-weight:500;white-space:nowrap}.inbox .sep{width:1px;height:22px;background:rgba(255,255,255,.16);flex:none}
+.eye{color:#999;display:grid;place-items:center}
+.rules{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+.rule{display:flex;align-items:center;gap:8px;font-size:13px;color:#999}.rule.ok{color:var(--text)}.rule i{display:grid;place-items:center}
+.otp6{display:flex;justify-content:space-between;gap:8px}
+.otp6 input{width:100%;max-width:54px;height:64px;border-radius:16px;background:rgba(36,36,36,.9);border:1px solid rgba(255,255,255,.12);text-align:center;font-family:var(--f-disp);font-size:24px;font-weight:700;outline:none}
+.otp6 input:focus{border-color:rgba(255,142,57,.8)}
+.ring{width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);display:grid;place-items:center}
+.ring>span{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center}
+.succ{width:72px;height:72px;border-radius:50%;background:rgba(52,199,89,.12);border:1px solid rgba(52,199,89,.3);display:grid;place-items:center;flex:none}
+.btn-text{color:#bbb;font-weight:500}
+.nrow{display:flex;gap:12px;padding:14px 0}.nrow+.nrow{border-top:1px solid rgba(255,255,255,.06)}
+.nrow i{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+.prow{display:flex;align-items:center;gap:22px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06);width:100%;text-align:left;font-size:14px}
+.mplace{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;width:100%;text-align:left;border:1px solid transparent}
+.mplace.on{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.25)}
+.mplace b{display:block;font-weight:500;font-size:14px}.mplace span span,.mplace>span:last-child>span{display:block;font-size:12px;color:#999}
+.mic{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);display:grid;place-items:center;flex:none}
+.locoff{display:flex;align-items:center;gap:12px;margin-top:12px;padding:14px;border-radius:20px;background:rgba(36,36,36,.95);border:1px solid rgba(255,255,255,.12)}
+.locoff b{display:block;font-size:14px;font-weight:600}.locoff>span:nth-child(2)>span{display:block;font-size:12px;color:#999}
+.smallbtn{height:36px;padding:0 16px;border-radius:100px;border:1.4px solid rgba(255,255,255,.16);font-size:13px;font-weight:500;flex:none}
+.seg-out{background:rgba(17,17,17,.35);border:1px solid rgba(255,255,255,.12)}
+.extopt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:84px;border-radius:20px;background:rgba(17,17,17,.35);border:1px solid rgba(255,255,255,.12)}
+.extopt b{font-size:13px;font-weight:600}.extopt span{font-size:11px;color:#999}
+.extopt.on{background:rgba(255,107,0,.12);border-color:rgba(255,107,0,.5)}.extopt.on span{color:var(--or)}
 </style>
 
 </head>
@@ -396,6 +451,17 @@ function setupMins(){ return S.setup.mode==='daily'? S.setup.days*1440 : S.setup
 function notify(title,body){ S.notifs.unshift({id:'n'+Date.now()+Math.random(),title,body,time:vnow(),read:false}); S.notifs=S.notifs.slice(0,40); save(); }
 /* ---------- icons ---------- */
 const I={
+ face:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M9 9v1.5M15 9v1.5M12 9v4h-1M9 16c1.6 1.3 4.4 1.3 6 0"/></svg>',
+ faceL:'<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#f4f5f2" stroke-width="1.5" stroke-linecap="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M9 9v1.5M15 9v1.5M12 9v4h-1M9 16c1.6 1.3 4.4 1.3 6 0"/></svg>',
+ pinL:'<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f4f5f2" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ pinO:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4f5f2" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ clockS:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>',
+ eye:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ warn:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff453a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3l9.5 17h-19L12 3z"/><path d="M12 10v4.5M12 17.2v.3"/></svg>',
+ okL:'<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#34c759" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ tick:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 12.5l4 4L18 8" stroke="#34c759" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ dotR:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="#777" stroke-width="1.6"/></svg>',
+ help:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg>',
  back:'<svg width="10" height="16" viewBox="0 0 10 16" fill="none"><path d="M8 2 2 8l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  chev:'<svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="m1.5 1.5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
  search:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#bbb" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="#bbb" stroke-width="2" stroke-linecap="round"/></svg>',
@@ -409,7 +475,7 @@ const I={
  check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  x:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#aeaeb2" stroke-width="1.8" stroke-linecap="round"/></svg>',
  plus:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
- logout:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9" stroke="#ff3700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ logout:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  bolt:'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
  bell:'<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a6 6 0 0 0-6 6v4l-2 4h16l-2-4V8a6 6 0 0 0-6-6Zm-2.5 17a2.5 2.5 0 0 0 5 0z"/></svg>',
  gear:'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10 2h4l.6 2.6 2 1.1 2.5-.9 2 3.4-2 1.8v2.2l2 1.8-2 3.4-2.5-.9-2 1.1L14 22h-4l-.6-2.6-2-1.1-2.5.9-2-3.4 2-1.8V11L3 9.2l2-3.4 2.5.9 2-1.1Zm2 13.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/></svg>',
@@ -420,6 +486,19 @@ const I={
  phone:'<svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="7" y="2" width="18" height="30" rx="4.5" stroke="#F4F5F2" stroke-width="1.8"/><rect x="27.5" y="8" width="2.5" height="8" rx="1.25" fill="#F4F5F2"/><path d="M12 17.5l2.6 2.6L20 14.6" stroke="#F4F5F2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 const statusBar=()=>`<div class="status"><span>${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span><svg width="70" height="13" viewBox="0 0 70 13" fill="#f4f5f2"><rect x="0" y="8" width="3" height="5" rx="1"/><rect x="5" y="6" width="3" height="7" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="13" rx="1"/><path d="M29 4.5a10 10 0 0 1 13 0l-1.5 1.7a7.6 7.6 0 0 0-10 0Zm3 3.3a5.6 5.6 0 0 1 7 0L35.5 12Z"/><rect x="45.5" y="1" width="22" height="11" rx="3.2" stroke="#f4f5f2" fill="none" opacity=".5"/><rect x="47.5" y="3" width="18" height="7" rx="1.6"/></svg></div>`;
+
+
+const hdrB=(title)=>`<div class="bhdr"><button class="backc" data-a="back" aria-label="Back">${I.back}</button>${title?`<h2>${title}</h2>`:''}</div>`;
+const maskPhone=ph=>{ const d=(ph||'').replace(/\D/g,'').replace(/^380/,''); return d.length>=9?`+380 ${d.slice(0,2)} *** ** ${d.slice(-2)}`:(ph||''); };
+const phoneField=(id,label)=>`<div class="fld"><label for="${id}">${label}</label><div class="inbox" id="${id}-box"><span class="pre">🇺🇦 +380</span><span class="sep"></span><input id="${id}" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="67 123 45 67" value="${UI.route==='forgot'?(S.user.phone||'').replace(/^\+380\s?/,''):''}" data-m="phone"></div><span class="ferr" id="${id}-err"></span></div>`;
+const pwField=(id,label,ac,ph,extra='')=>`<div class="fld"><label for="${id}">${label}</label><div class="inbox" id="${id}-box"><input id="${id}" type="password" autocomplete="${ac}" placeholder="${ph}" ${extra}><button class="eye" data-a="eye" data-v="${id}" aria-label="Show password">${I.eye}</button></div><span class="ferr" id="${id}-err"></span></div>`;
+const rulesHTML=k=>`<div class="rules" id="${k}-rules">${[['len','At least 8 characters'],['num','One number'],['match','Passwords match']].map(([r,l])=>`<div class="rule" data-r="${r}"><i>${I.dotR}</i><span>${l}</span></div>`).join('')}</div>`;
+function updRules(k){ const a=$('#'+k+'1')?.value||'', b=$('#'+k+'2')?.value||''; const ok={len:a.length>=8,num:/\d/.test(a),match:!!a&&a===b}; document.querySelectorAll('#'+k+'-rules .rule').forEach(el=>{ const v=ok[el.dataset.r]; el.classList.toggle('ok',v); el.querySelector('i').innerHTML=v?I.tick:I.dotR; }); return ok.len&&ok.num&&ok.match; }
+const fmtDM=t=>new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+const fmtDMT=t=>fmtDM(t)+', '+fmtTime(t);
+const fmtFull=t=>new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+function durShort(m){ m=Math.round(m); if(m>=1440){ const d=Math.floor(m/1440),h=Math.round((m%1440)/60); return h?`${d}d ${h}h`:hl(d,'day'); } const h=Math.floor(m/60),mm=m%60; return h?(mm?`${h}h ${mm}m`:`${h}h`):`${mm}m`; }
+
 const hdr=(title,back=true)=>`<div class="hdr">${back?`<button class="icon-btn" data-a="back" aria-label="Back">${I.back}</button>`:''}<h2>${title}</h2></div>`;
 
 /* ---------- map art (procedural night streets) ---------- */
@@ -492,37 +571,88 @@ function clearEndedOnMap(){
 function refundEst(){ const s=S.session; if(!s) return {used:0,refund:0,mins:0}; const p=P(s.pid), usedMin=Math.max(1,(vnow()-s.startAt)/60000); let used; if(s.mode==='daily'){ used=Math.min(s.total,Math.max(1,Math.ceil(usedMin/1440))*p.day); } else { used=Math.min(s.total,Math.max(1,Math.ceil(usedMin/60))*p.rate); } return {used,refund:Math.max(0,s.total-used),mins:Math.round(usedMin)}; }
 function endSession(){
  const s=S.session; if(!s||s.ended) return; s.ended=true;
- S.history.unshift({id:s.id,pid:s.pid,start:s.startAt,mins:s.mins,mode:s.mode,total:s.total,plate:s.plate,card:s.card});
+ S.history.unshift({id:s.id,pid:s.pid,start:s.startAt,mins:s.mins,mode:s.mode,total:s.total,paid:s.total+(s.refund||0),refund:s.refund||0,plate:s.plate,card:s.card});
  save();
 }
 
 /* ---------- screens ---------- */
 const SCREENS={
- splash(){ return `<div class="screen" style="align-items:center;justify-content:center;gap:18px"><div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);opacity:.22">${uaSVG('width:100%;height:auto;display:block')}</div>
-  <div style="position:relative;width:88px;height:88px;border-radius:25px;background:var(--grad);display:grid;place-items:center;box-shadow:0 10px 40px rgba(255,90,0,.4)"><span class="num" style="font-size:44px;color:#111;font-weight:800">P</span></div>
-  <div style="position:relative;text-align:center"><div class="num" style="font-size:30px;letter-spacing:.12em;font-weight:800">PARKING</div><div style="color:var(--mute);font-size:13px;font-weight:500;margin-top:10px">One app for parking across Ukraine</div></div></div>`; },
+ splash(){ return `<div class="screen" style="align-items:center;justify-content:center;gap:16px"><div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);opacity:.18">${uaSVG('width:100%;height:auto;display:block')}</div>
+  <div style="position:relative;width:88px;height:88px;border-radius:24px;background:var(--grad);display:grid;place-items:center;box-shadow:0 8px 40px rgba(255,77,0,.5)"><span class="num" style="font-size:44px;color:#111;font-weight:800">P</span></div>
+  <div class="num" style="position:relative;font-size:28px;font-weight:800">Parking</div>
+  <div style="position:absolute;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));text-align:center;color:#777;font-size:13px">One app for parking across Ukraine</div></div>`; },
  welcome(){ return `<div class="screen"><div class="hero-map" style="position:relative;height:calc(min(430px, 46vh) + env(safe-area-inset-top,0px));flex:0 1 auto;min-height:240px;overflow:hidden"><div style="position:absolute;top:0;left:0;right:0;z-index:3">${statusBar()}</div><div style="position:absolute;left:0;right:0;top:56%;transform:translateY(-50%)">${uaSVG('width:100%;height:auto;display:block')}</div></div>
-  <div style="padding:0 16px;flex:1"><h1 class="h1" style="font-size:32px">One app for parking across Ukraine</h1><p class="lead" style="font-size:16px">Find a spot, pay in two taps and forget about it — we’ll remind you when it matters.</p></div>
-  <div class="foot"><button class="btn btn-primary" data-a="go" data-v="signup">Create account</button><button class="btn btn-ghost" data-a="go" data-v="login">Log in</button></div></div>`; },
- signup(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Create account</h1><p class="lead">Enter your phone number to get started.</p>
-  <div class="field" style="margin-top:28px"><label for="phone">Phone number</label><input class="input" id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 67 123 4567" data-m="phone"></div></div>
-  <div class="foot"><button class="btn btn-primary" data-a="go" data-v="otp">Continue</button><p style="text-align:center;margin:0;color:var(--mute);font-size:14px">Already have an account? <button class="link" data-a="go" data-v="login">Log in</button></p></div></div>`; },
- otp(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Verify phone number</h1><p class="lead">Enter the 6-digit code we sent to ${S.user.phone}${UI.otpFor==='reset'?' to reset your password':''}.</p>
-  <div class="otp" style="margin-top:28px">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" pattern="[0-9]*" ${i===0?'autocomplete="one-time-code"':'autocomplete="off"'} maxlength="${i===0?6:1}" aria-label="Digit ${i+1}" data-otp="${i}">`).join('')}</div><p class="hint" style="margin-top:14px">Demo: any 6 digits work.</p></div>
-  <div class="foot"><button class="btn btn-primary" id="otpGo" data-a="otpDone" disabled>Continue</button></div></div>`; },
- login(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Log in</h1><p class="lead">Welcome back. Enter your phone number and password.</p>
-  <div class="field" style="margin-top:28px"><label for="lphone">Phone number</label><input class="input" id="lphone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 67 123 4567" data-m="phone"><span class="ferr" id="lphone-err"></span></div>
-  <div class="field" style="margin-top:18px"><label for="lpass">Password</label><input class="input" id="lpass" type="password" autocomplete="current-password" placeholder="Enter your password"><span class="ferr" id="lpass-err"></span></div><button class="link" style="margin-top:14px;font-size:14px" data-a="go" data-v="forgot">Forgot password?</button></div>
-  <div class="foot"><button class="btn btn-primary" data-a="loginGo">Log in</button><button class="btn btn-ghost" data-a="faceId">Log in with Face ID</button></div></div>`; },
- location(){ return `<div class="screen" style="text-align:center">${statusBar()}<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px;gap:14px">
-  <div style="width:140px;height:140px;border-radius:50%;background:rgba(255,107,0,.14);border:1px solid rgba(255,107,0,.35);display:grid;place-items:center;margin-bottom:18px"><svg width="46" height="60" viewBox="0 0 34 44"><path d="M17 0C7.6 0 0 7.4 0 16.6 0 29 17 44 17 44s17-15 17-27.4C34 7.4 26.4 0 17 0Z" fill="#ff3700"/><text x="17" y="22" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#111">P</text></svg></div>
-  <h1 class="h1">Find parking near you</h1><p class="lead" style="margin:0">Allow location access so we can show nearby parking spots automatically.</p></div>
-  <div class="foot"><button class="btn btn-primary" data-a="toMap">Allow location</button><button class="btn btn-ghost" data-a="toMap">Not now</button></div></div>`; },
+  <div style="padding:0 16px;flex:1;display:flex;flex-direction:column;gap:12px;justify-content:flex-end;padding-bottom:20px"><span style="width:52px;height:52px;border-radius:14px;background:var(--grad);display:grid;place-items:center"><span class="num" style="font-size:24px;color:#111;font-weight:800">P</span></span><h1 class="h1" style="font-size:30px;line-height:1.25">One app for parking across Ukraine</h1><p class="sub" style="margin:0">Find a spot, pay in two taps and forget about it — we’ll remind you when it matters.</p></div>
+  <div class="foot"><button class="btn btn-primary" data-a="go" data-v="signup">Get started</button><button class="btn btn-text" data-a="go" data-v="login">I already have an account</button></div></div>`; },
+ signup(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:16px;padding-top:18px"><div><h1 class="h26">Create your account</h1><p class="sub">Start with your phone number — we’ll send a 6-digit code.</p></div>
+  ${phoneField('phone','Phone number')}<p class="hint" style="margin:0;font-size:12px;color:#777">By continuing you agree to the Terms and Privacy Policy.</p></div>
+  <div class="foot"><button class="btn btn-primary" data-a="go" data-v="otp">Get code</button></div></div>`; },
+ otp(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:12px;padding-top:18px"><div><h1 class="h26">Enter the code</h1><p class="sub">Sent to ${maskPhone(S.user.phone)}</p></div>
+  <div class="otp6">${[0,1,2,3,4,5].map(i=>`<input id="otp${i}" inputmode="numeric" pattern="[0-9]*" ${i===0?'autocomplete="one-time-code"':'autocomplete="off"'} maxlength="${i===0?6:1}" aria-label="Digit ${i+1}" data-otp="${i}">`).join('')}</div>
+  <p style="margin:0;font-size:13px;color:#999">Resend code in 0:42 · <span style="color:#777">demo: any 6 digits</span></p></div></div>`; },
+ login(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:16px;padding-top:18px"><div><h1 class="h26">Welcome back</h1><p class="sub">Log in with your phone number and password.</p></div>
+  ${phoneField('lphone','Phone number')}${pwField('lpass','Password','current-password','Enter your password')}
+  <div style="display:flex;justify-content:flex-end"><button style="font-size:14px;font-weight:500" data-a="go" data-v="forgot">Forgot password?</button></div></div>
+  <div class="foot"><button class="btn btn-primary" data-a="loginGo">Log in</button><button class="btn btn-ghost" data-a="faceId">${I.face} Log in with Face ID</button><p style="text-align:center;margin:4px 0 0;font-size:14px;color:#999">New here? <button style="font-weight:600;color:var(--text)" data-a="go" data-v="signup">Create an account</button></p></div></div>`; },
+ createPass(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:16px;padding-top:18px"><div><h1 class="h26">Create a password</h1><p class="sub">You’ll use it to log in on a new phone. On this one, Face ID is enough.</p></div>
+  ${pwField('cp1','Password','new-password','At least 8 characters','data-pw="cp"')}${pwField('cp2','Repeat password','new-password','Repeat the password','data-pw="cp"')}${rulesHTML('cp')}<p class="ferr" id="cperr"></p></div>
+  <div class="foot"><button class="btn btn-primary" data-a="createPassGo">Continue</button></div></div>`; },
+ faceSetup(){ return `<div class="screen">${statusBar()}<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 16px;text-align:center"><div class="ring"><span>${I.faceL}</span></div><h1 class="h26">Log in with Face ID</h1><p class="sub" style="margin:0">Open the app and pay in one glance — no password every time.</p></div>
+  <div class="foot"><button class="btn btn-primary" data-a="faceOn">Enable Face ID</button><button class="btn btn-text" data-a="go" data-v="location">Not now</button></div></div>`; },
+ location(){ return `<div class="screen">${statusBar()}<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 16px;text-align:center"><div class="ring"><span>${I.pinL}</span></div><h1 class="h26">Find parking near you</h1><p class="sub" style="margin:0">We use your location to show nearby parkings and to remind you to end parking when you drive away.</p><div class="fc" style="padding:14px;width:100%;text-align:left;font-size:12px;color:#999;line-height:17px;border-radius:20px">Location is used only while parking is active. You can change this anytime in Settings.</div></div>
+  <div class="foot"><button class="btn btn-primary" data-a="locAllow">Allow location</button><button class="btn btn-text" data-a="go" data-v="manualLoc">Enter address manually</button></div></div>`; },
+ manualLoc(){ const pl=(id,ic,t1,t2)=>`<button class="mplace ${UI.mloc===id?'on':''}" data-a="mloc" data-v="${id}"><span class="mic">${ic}</span><span style="flex:1;min-width:0"><b>${t1}</b><span>${t2}</span></span></button>`;
+  return `<div class="screen">${statusBar()}${hdrB('Choose location')}<div class="scroll" style="display:flex;flex-direction:column;gap:16px">
+  <label class="inbox" style="border-radius:100px;border-color:rgba(255,255,255,.3)">${I.search}<input placeholder="Enter address or place" aria-label="Address"></label>
+  <div><div class="lab">Recent</div><div class="fc" style="padding:4px;border-radius:24px">${pl('rynok',I.clockS,'Rynok square','Lviv')}${pl('lwo',I.clockS,'Lviv Airport (LWO)','Lviv')}</div></div>
+  <div><div class="lab">Suggested</div><div class="fc" style="padding:4px;border-radius:24px">${pl('opera',I.pinO,'Lviv Opera House','Svobody ave, Lviv')}${pl('station',I.pinO,'Lviv Railway Station','Dvirtseva sq., Lviv')}${pl('forum',I.pinO,'Forum Lviv','Pid Dubom st., Lviv')}</div></div></div>
+  <div class="foot"><button class="btn btn-primary" data-a="locManual">Confirm location</button></div></div>`; },
+ history(){ const city=UI.hcity||'all'; const list=city==='Kyiv'?[]:S.history; const groups={}; list.forEach(h=>{ const k=new Date(h.start).toLocaleDateString('en-GB',{month:'long',year:'numeric'}); (groups[k]=groups[k]||[]).push(h); });
+  const chip=(k,l)=>`<button class="chip ${city===k?'on':''}" data-a="hcity" data-v="${k}">${l}</button>`;
+  return `<div class="screen with-tabs">${statusBar()}<h1 class="ttl">History</h1><div class="scroll" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="gap:8px">${chip('all','All')}${chip('Lviv','Lviv')}${chip('Kyiv','Kyiv')}</div>
+  ${Object.keys(groups).length?Object.entries(groups).map(([m,hs])=>`<div><div class="lab">${m}</div><div class="fc" style="padding:4px 16px">${hs.map(h=>{const p=P(h.pid); return `<button class="hitem" data-a="openReceipt" data-v="${h.id}"><span class="pico">P</span><span style="flex:1;min-width:0"><b style="display:block;font-weight:500;font-size:14px">${p.id} · ${p.name}</b><span style="font-size:12px;color:#999">${fmtDM(h.start)} · ${durShort(h.mins)}</span></span><span class="num" style="font-size:15px;font-weight:600">${money(h.total)}</span><span style="color:#777">${I.chev}</span></button>`;}).join('')}</div></div>`).join(''):`<div class="empty">${city==='Kyiv'?'No parking sessions in Kyiv yet.':'No sessions yet. Your parking history will appear here.'}</div>`}</div></div>`; },
+ receipt(){ const h=S.history.find(x=>x.id===UI.receiptId); const p=P(h.pid); const paid=h.paid||h.total; const rw=(a,b,c='')=>`<div class="rw ${c}"><span>${a}</span><span>${b}</span></div>`;
+  return `<div class="screen">${statusBar()}${hdrB('Receipt')}<div class="scroll" style="display:flex;flex-direction:column;gap:16px"><div class="fc rws"><div class="row" style="gap:12px"><span class="pico">P</span><div><div class="num" style="font-size:20px;font-weight:800">${p.id}</div><div style="font-size:12px;color:#999">${p.name}, Lviv</div></div></div><div class="hr"></div>
+  ${rw('Date',fmtFull(h.start))}${rw('Started',fmtTime(h.start))}${rw('Ended',fmtTime(h.start+h.mins*60e3))}${rw('Duration',durShort(h.mins))}${rw('Vehicle',h.plate)}${rw('Rate',h.mode==='daily'?money(p.day)+'/day':money(p.rate)+'/hr')}<div class="hr"></div>
+  ${rw('Paid',money(paid))}${h.refund?rw('Refunded','− '+money(h.refund)):''}${rw('Total paid',money(h.total),'big')}${rw('Payment',h.card)}</div>
+  <p style="margin:0;text-align:center;font-size:12px;color:#777">Receipt № ${h.id}</p></div>
+  <div class="foot" style="flex-direction:row"><button class="btn btn-ghost" data-a="demoToast" data-v="PDF saved (demo)">Download PDF</button><button class="btn btn-ghost" data-a="demoToast" data-v="Share sheet (demo)">Share</button></div></div>`; },
+ fines(){ const unpaid=S.fines.filter(f=>!f.paid), paid=S.fines.filter(f=>f.paid); const tab=UI.fineTab;
+  const card=f=>{const p=P(f.pid); return `<button class="fc fcard ${f.paid?'dim':''}" data-a="openFine" data-v="${f.id}"><span class="row" style="justify-content:space-between;width:100%"><span class="tag ${f.paid?'green':'red'}">${f.paid?'Paid':'Unpaid'}</span><span style="font-size:11px;color:#777">№ ${f.id}</span></span><span class="row" style="justify-content:space-between;width:100%;gap:12px"><span style="flex:1;min-width:0;text-align:left"><b style="display:block;font-weight:600;font-size:15px">${f.reason}</b><span style="font-size:12px;color:#999">${p.name}, Lviv · ${fmtDMT(f.date)}</span></span><span class="num" style="font-size:20px">${money(f.amount)}</span><span style="color:#777">${I.chev}</span></span></button>`;};
+  const due=unpaid.length?unpaid.reduce((a,b)=>a.due<b.due?a:b).due:null;
+  return `<div class="screen with-tabs">${statusBar()}<h1 class="ttl">Fines</h1><div class="scroll" style="display:flex;flex-direction:column;gap:16px"><div class="row" style="gap:8px"><button class="chip ${tab==='unpaid'?'on':''}" data-a="fineTab" data-v="unpaid">Unpaid · ${unpaid.length}</button><button class="chip ${tab==='paid'?'on':''}" data-a="fineTab" data-v="paid">Paid · ${paid.length}</button></div>
+  ${tab==='unpaid'?(unpaid.length?`<div class="alert">${I.warn}<span>${unpaid.length} unpaid fine${unpaid.length>1?'s':''}. Pay by ${fmtDM(due)} to avoid a surcharge.</span></div>${unpaid.map(card).join('')}`:`<div class="empty"><div class="succ" style="margin:0 auto 16px">${I.okL}</div><b style="color:var(--text);font-family:var(--f-disp);font-size:20px">No unpaid fines</b><p style="margin-top:8px">You’re all set.</p></div>`)+(paid.length?`<div><div class="lab">Paid</div><div style="display:flex;flex-direction:column;gap:12px">${paid.map(card).join('')}</div></div>`:''):(paid.length?paid.map(card).join(''):`<div class="empty">Fines you pay will be kept here.</div>`)}</div></div>`; },
+ fine(){ const f=S.fines.find(x=>x.id===UI.fineId); const p=P(f.pid); const rw=(a,b)=>`<div class="rw"><span>${a}</span><span>${b}</span></div>`;
+  return `<div class="screen">${statusBar()}${hdrB('Fine details')}<div class="scroll" style="display:flex;flex-direction:column;gap:16px"><div class="fc" style="display:flex;flex-direction:column;align-items:center;gap:8px"><span style="font-size:12px;color:#999">${f.paid?'Amount paid':'Amount to pay'}</span><span class="num" style="font-size:40px">${money(f.amount)}</span><span class="tag ${f.paid?'green':'red'}">${f.paid?'Paid '+fmtDM(f.paidAt):'Pay by '+fmtDM(f.due)}</span></div>
+  <div class="fc rws">${rw('Fine number',f.id)}${rw('Reason',f.reason)}${rw('Location',p.name+', Lviv')}${rw('Date & time',fmtFull(f.date)+', '+fmtTime(f.date))}${rw('Vehicle',f.plate)}${rw('Issued by','Lviv parking inspection')}</div>
+  <p style="margin:0;text-align:center;font-size:12px;color:#777;line-height:17px">Once paid in the app, the fine closes in the city register automatically.</p></div>
+  ${f.paid?'':`<div class="foot"><button class="btn btn-primary" data-a="payFine">Pay ${money(f.amount)}</button></div>`}</div>`; },
+ finePaid(){ const f=S.fines.find(x=>x.id===UI.fineId); const rw=(a,b,c='')=>`<div class="rw ${c}"><span>${a}</span><span>${b}</span></div>`;
+  return `<div class="screen">${statusBar()}<div class="scroll" style="display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:70px"><div class="succ">${I.okL}</div><div style="text-align:center"><h1 class="h26">Fine paid</h1><p style="margin:6px 0 0;font-size:13px;color:#999">№ ${f.id} is now closed</p></div>
+  <div class="fc rws" style="width:100%">${rw('Amount',money(f.amount),'big')}${rw('Paid with',cardLabel(card()))}${rw('Date',fmtFull(f.paidAt)+', '+fmtTime(f.paidAt))}</div></div>
+  <div class="foot"><button class="btn btn-primary" data-a="toFines">Done</button><button class="btn btn-ghost" data-a="demoToast" data-v="Receipt saved (demo)">Download receipt</button></div></div>`; },
+ profile(){ const ini=S.user.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const rows=[['go','vehicles','My vehicles',I.car],['go','cards','Payment methods',I.cardI],['go','notifications','Notifications',I.bell],['demoToast','Help & support is a demo','Help & support',I.help],['go','settings','Settings',I.gear]];
+  return `<div class="screen with-tabs">${statusBar()}<h1 class="ttl">Profile</h1><div class="scroll">
+   <div class="row" style="gap:24px;padding:4px 0 20px"><span style="width:44px;height:44px;border-radius:50%;background:#2a2a2a;display:grid;place-items:center;font-weight:800;font-size:18px;color:#bbb">${ini}</span><div style="flex:1"><div style="font-weight:600;font-size:16px">${S.user.name}</div><div style="font-size:12px;font-weight:300;color:#bbb;margin-top:6px">${maskPhone(S.user.phone)}</div></div><span style="color:#ddd">${I.chev}</span></div>
+   ${rows.map(([a,v,l,ic])=>`<button class="prow" data-a="${a}" data-v="${v}"><span style="color:#bbb;display:grid;place-items:center;width:24px">${ic}</span><span style="flex:1">${l}</span><span style="color:#ddd">${I.chev}</span></button>`).join('')}
+   <button class="prow" style="border:0" data-a="logout"><span style="color:#bbb;display:grid;place-items:center;width:24px">${I.logout}</span><span style="flex:1;font-size:16px">Log out</span></button>
+   <button class="hint" style="margin-top:10px;text-decoration:underline" data-a="reset">Reset demo data</button></div></div>`; },
+ forgot(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:16px;padding-top:18px"><div><h1 class="h26">Reset password</h1><p class="sub">Enter your phone number and we’ll send you a code.</p></div>${phoneField('fphone','Phone number')}</div>
+  <div class="foot"><button class="btn btn-primary" data-a="sendReset">Send code</button></div></div>`; },
+ newPass(){ return `<div class="screen">${statusBar()}${hdrB()}<div class="scroll" style="display:flex;flex-direction:column;gap:16px;padding-top:18px"><div><h1 class="h26">New password</h1><p class="sub">Choose a password you haven’t used here before.</p></div>
+  ${pwField('np1','Password','new-password','At least 8 characters','data-pw="np"')}${pwField('np2','Repeat password','new-password','Repeat the password','data-pw="np"')}${rulesHTML('np')}<p class="ferr" id="perr"></p></div>
+  <div class="foot"><button class="btn btn-primary" data-a="savePass">Continue</button></div></div>`; },
+ passUpdated(){ return `<div class="screen">${statusBar()}<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:0 16px;text-align:center"><div class="succ">${I.okL}</div><div><h1 class="h26">Password updated</h1><p class="sub">You can now log in with your new password.</p></div></div>
+  <div class="foot"><button class="btn btn-primary" data-a="toLogin">Log in</button></div></div>`; },
+ notifications(){ const list=S.notifs.map(n=>({...n})); S.notifs.forEach(n=>n.read=true); save(); const today=new Date(vnow()).toDateString();
+  const item=n=>`<div class="nrow"><i style="background:${n.read?'transparent':'#f4f5f2'}"></i><div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b style="font-weight:600;font-size:14px">${n.title}</b><span style="font-size:12px;color:#777">${new Date(n.time).toDateString()===today?fmtTime(n.time):fmtDM(n.time)}</span></div><p style="margin:4px 0 0;font-size:13px;color:#bbb;line-height:18px">${n.body}</p></div></div>`;
+  const t=list.filter(n=>new Date(n.time).toDateString()===today), e=list.filter(n=>new Date(n.time).toDateString()!==today);
+  return `<div class="screen">${statusBar()}${hdrB('Notifications')}<div class="scroll" style="display:flex;flex-direction:column;gap:16px">${list.length?`${t.length?`<div><div class="lab">Today</div><div class="fc" style="padding:2px 16px 2px 12px">${t.map(item).join('')}</div></div>`:''}${e.length?`<div><div class="lab">Earlier</div><div class="fc" style="padding:2px 16px 2px 12px">${e.map(item).join('')}</div></div>`:''}`:`<div class="empty">No notifications yet.</div>`}</div></div>`; },
  map(){
   const st=sessionState(); const p=UI.selected?P(UI.selected):null;
   const top = st!=='none'? `<button class="card session-card" data-a="go" data-v="active"><div><div class="row" style="gap:8px"><span class="live ${st==='warn'?'warn':st==='ended'?'off':''}"></span><span class="label" style="color:var(--text)">${st==='ended'?'Parking ended':'Parking active'}</span></div><div class="hint" style="margin-top:6px">${S.session.pid} · ${P(S.session.pid).name}</div></div><span class="num" style="font-size:22px;color:${st==='ended'?'var(--mute)':st==='warn'?'var(--urgent)':'var(--text)'}" data-timer>${fmtRemain(remaining())}</span></button>` :
-   `<div class="map-top ${UI.mapIntro?'enter':''}"><h1 class="h1" style="font-size:22px">Where do you want to park?</h1><div class="search"><label class="box"><span>${I.search}</span><input id="q" placeholder="Search for a location..." value="${UI.search}" data-m="search" aria-label="Search"></label><button class="round" data-a="sheet" data-v="filters" aria-label="Filters">${I.filter}${filtersOn()?'<i class="dot-badge"></i>':''}</button><button class="round" data-a="go" data-v="notifications" aria-label="Notifications" style="color:#f4f5f2">${I.bell}${S.notifs.some(n=>!n.read)?'<i class="dot-badge"></i>':''}</button></div>${UI.search.trim()?resultsHTML():''}</div>`;
-  const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label">Nearby · ${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div><div class="row" style="justify-content:space-between;margin-top:6px"><div><div class="num" style="font-size:24px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:2px">${p.name}, Lviv</div></div><div style="text-align:right"><span class="num or" style="font-size:24px">${money(p.rate)}</span><span class="hint"> /hr</span><div style="color:var(--mute);font-size:12px;margin-top:4px">${p.spots} spots</div></div></div></button>`:'';
+   `<div class="map-top ${UI.mapIntro?'enter':''}"><h1 class="h1" style="font-size:22px">Where do you want to park?</h1><div class="search"><label class="box"><span>${I.search}</span><input id="q" placeholder="Search for a location..." value="${UI.search}" data-m="search" aria-label="Search"></label><button class="round" data-a="sheet" data-v="filters" aria-label="Filters">${I.filter}${filtersOn()?'<i class="dot-badge"></i>':''}</button></div>${S.locOff&&!UI.search.trim()?`<div class="locoff"><span class="mic">${I.pinO}</span><span style="flex:1;min-width:0"><b>Location is off</b><span>Turn it on to see parkings near you</span></span><button class="smallbtn" data-a="locOn">Turn on</button></div>`:''}${UI.search.trim()?resultsHTML():''}</div>`;
+  const prev = p && st==='none' ? `<button class="card preview" data-a="go" data-v="info" style="text-align:left;display:block;width:auto"><div class="label" style="font-size:10px">Nearby</div><div class="row" style="gap:12px;margin-top:8px"><span class="pico" style="width:34px;height:34px;border-radius:10px">P</span><div style="flex:1;min-width:0"><div class="num" style="font-size:22px">${p.id}</div><div class="hint" style="font-size:12px">${p.name}, Lviv</div><div class="hint" style="font-size:11px;margin-top:4px">•‑‑‑‑› &nbsp;${p.dist<1000?p.dist+' m':(p.dist/1000).toFixed(1)+' km'}</div></div><div style="text-align:right"><span class="num" style="font-size:22px">${money(p.rate)}</span><span class="hint"> /hr</span><div class="hint" style="margin-top:14px">${p.spots} spots</div></div><span style="color:#777">${I.chev}</span></div></button>`:'';
   const none = !filtered().length && st==='none' ? `<div class="card" style="position:absolute;left:16px;right:16px;bottom:104px;z-index:6;padding:16px 18px"><b>No parking matches</b><p class="hint" style="margin:6px 0 0">Change the filters or search to see more spots.</p></div>`:'';
   return `<div class="screen clear with-tabs">${LMAP.mode==='svg'?mapHTML():''}<div class="map-glow"></div><div class="map-glow b"></div><div style="z-index:5">${statusBar()}</div>${top}${prev}${none}</div>`; },
  info(){ const p=P(UI.selected);
@@ -545,53 +675,22 @@ const SCREENS={
    <div class="row" style="justify-content:space-between;margin:22px 4px 10px"><span class="label">Vehicle</span>${v?'<button class="link" style="font-size:13px" data-a="sheet" data-v="vehicle">Change</button>':''}</div>
    ${v?`<button class="card row" style="padding:16px 18px;width:100%;text-align:left" data-a="sheet" data-v="vehicle"><span style="color:var(--sec)">${I.car}</span><div><div style="font-weight:600;font-family:var(--f-disp);font-size:17px">${v.plate}</div><div class="hint">${v.model} · ${v.color}</div></div></button>`:`<button class="card row" style="padding:16px 18px;width:100%;text-align:left;border-style:dashed" data-a="go" data-v="addVehicle"><span style="color:var(--or)">${I.plus}</span><div><div style="font-weight:600">Add a vehicle</div><div class="hint">You need a vehicle to start parking</div></div></button>`}
    <div class="label" style="margin:22px 4px 10px">Duration</div>
-   <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:16px">
-    <div class="seg" role="tablist"><button class="${!daily?'on':''}" data-a="mode" data-v="hourly">Hourly</button><button class="${daily?'on':''}" data-a="mode" data-v="daily">Daily</button></div>
-    <div class="stepper"><button class="step-btn" data-a="dur" data-v="-1" aria-label="Less" ${val<=1?'disabled':''}>${I.minus}</button><div style="text-align:center"><div class="num" style="font-size:28px">${hl(val,unit)}</div><div class="hint">Starts now · until ${daily?fmtDate(until)+', ':''}${fmtTime(until)}</div></div><button class="step-btn plus" data-a="dur" data-v="1" aria-label="More" ${val>=(daily?7:24)?'disabled':''}>${I.plusB}</button></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${[1,2,3].map(n=>`<button class="chip" data-a="dur" data-v="${n}">+${hl(n,unit)}</button>`).join('')}</div></div>
+   <div class="seg seg-out" role="tablist"><button class="${!daily?'on':''}" data-a="mode" data-v="hourly">Hourly</button><button class="${daily?'on':''}" data-a="mode" data-v="daily">Daily</button></div>
+   <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:16px;margin-top:10px">
+    <div class="stepper"><button class="step-btn" data-a="dur" data-v="-1" aria-label="Less" ${val<=1?'disabled':''}>${I.minus}</button><div style="text-align:center"><div class="num" style="font-size:28px">${hl(val,unit)}</div><div class="hint">${daily?'Until '+fmtDate(until)+' · '+fmtTime(until):'Starts now · until '+fmtTime(until)}</div></div><button class="step-btn plus" data-a="dur" data-v="1" aria-label="More" ${val>=(daily?7:24)?'disabled':''}>${I.plusB}</button></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${[1,2,3].map(n=>`<button class="chip ${val===n?'on':''}" data-a="durSet" data-v="${n}">${hl(n,unit)}</button>`).join('')}</div></div>
    <div class="row" style="justify-content:space-between;margin:22px 4px 10px"><span class="label">Payment method</span>${card()?'<button class="link" style="font-size:13px" data-a="sheet" data-v="payment">Change</button>':''}</div>
    ${card()?`<button class="card row" style="padding:16px 18px;width:100%;text-align:left" data-a="sheet" data-v="payment">${payIco(card())}<div><div style="font-weight:500">${cardLabel(card())}</div><div class="hint">${card().id==='applepay'?'Confirm with Face ID or Side Button':'Charged when parking starts'}</div></div></button>`:`<button class="card row" style="padding:16px 18px;width:100%;text-align:left;border-style:dashed" data-a="sheet" data-v="addCard"><span style="color:var(--or)">${I.plus}</span><div><div style="font-weight:600">Add a card</div><div class="hint">You need a card to pay for parking</div></div></button>`}
   </div><div class="foot"><div class="row" style="justify-content:space-between"><div><div style="font-weight:500">Total to pay</div><div class="hint">${hl(val,unit)} × ${daily?money(p.day)+'/day':money(p.rate)+'/hr'}</div></div><span class="num" style="font-size:32px">${money(setupPrice())}</span></div><button class="btn btn-primary" data-a="payStart" ${v&&card()?'':'disabled'}>Pay ${money(setupPrice())} & Start parking</button></div></div>`; },
  active(){ const s=S.session; if(!s) return SCREENS.map(); const st=sessionState(); const p=P(s.pid); const ended=st==='ended';
+  if(ended&&s.stopped){ const rw=(a,b,c='')=>`<div class="rw ${c}"><span>${a}</span><span>${b}</span></div>`; return `<div class="screen with-tabs">${statusBar()}<div class="scroll" style="display:flex;flex-direction:column;align-items:center;gap:24px;padding-top:46px"><div class="succ">${I.okL}</div><div style="text-align:center"><h1 class="h26">Parking ended</h1><p style="margin:6px 0 0;font-size:13px;color:#999">${p.id} · ${p.name}, Lviv</p></div><div class="fc rws" style="width:100%">${rw('Started',fmtTime(s.startAt))}${rw('Ended',fmtTime(s.endsAt))}${rw('Duration',durShort(s.mins))}${rw('Vehicle',s.plate)}<div class="hr"></div>${rw('Paid',money(s.total+(s.refund||0)))}${rw('Refunded','− '+money(s.refund||0))}<div class="hr"></div>${rw('Total',money(s.total),'big')}</div><p style="margin:0;font-size:12px;color:#777;text-align:center">Refund goes to ${s.card} within 1–3 days.</p><div style="display:flex;flex-direction:column;gap:12px;width:100%;margin-top:auto"><button class="btn btn-primary" data-a="parkAgain">Done</button><button class="btn btn-ghost" data-a="openReceipt" data-v="${s.id}">View receipt</button></div></div></div>`; }
   return `<div class="screen with-tabs">${statusBar()}<div class="scroll" style="display:flex;flex-direction:column">
    <div style="margin-top:20px"><div class="row" style="gap:10px"><span class="live ${st==='warn'?'warn':ended?'off':''}"></span><span class="label" style="color:${ended&&!s.stopped?'var(--urgent)':'var(--text)'};font-size:12px">${ended?(s.stopped?'Parking ended':'Parking time is over'):'Parking active'}</span>${ended?'':`<button class="endpill" data-a="sheet" data-v="endConfirm">End parking</button>`}</div><div class="label" style="margin-top:10px;font-weight:400;opacity:.6">${p.id} · ${p.name}, Lviv</div></div>
    <div style="margin:70px 0 10px;text-align:center"><div class="num timer-big ${ended?(s.stopped?'off':'over'):st==='warn'?'warn':''}" data-timer>${fmtRemain(remaining())}</div><div style="margin-top:12px;font-size:14px;color:${(st==='warn'||(ended&&!s.stopped))?'var(--urgent)':'var(--mute)'}" data-sub>${ended?(s.stopped?`Parking ended. ${money(s.refund||0)} returned to your card`:'Your paid time is over'):st==='warn'?'Parking ends in less than 15 minutes':'Remaining time'}</div></div>
-   <div class="card" style="padding:26px;text-align:center;margin-top:12px"><div class="hint" style="font-size:13px">Paid for ${durLabel(s.mins)}</div><div class="num or" style="font-size:38px;margin:8px 0">${money(s.total)}</div><div style="font-size:12px;font-weight:600">${s.card}</div><div class="hint" style="margin-top:6px">${s.plate} · ${s.model}</div></div>
+   <div class="card" style="padding:26px;text-align:center;margin-top:12px"><div class="hint" style="font-size:13px">Paid for ${durLabel(s.mins)}</div><div class="num or" style="font-size:38px;margin:8px 0">${money(s.total)}</div><div style="font-size:12px;font-weight:600">${s.card}</div></div>
    <div style="display:flex;flex-direction:column;gap:12px;margin-top:auto;padding-top:24px">
    ${ended?`<button class="btn btn-ghost" data-a="openReceipt" data-v="${s.id}">View receipt</button><button class="btn btn-primary" data-a="parkAgain">Park again</button>`:
    `<button class="btn btn-ghost" data-a="tab" data-v="map">View on map</button><button class="btn btn-primary" data-a="sheet" data-v="extend">Extend parking</button><button class="hint" style="padding:6px;border:1px dashed rgba(255,255,255,.18);border-radius:14px" data-a="driveAway">Demo: simulate driving away from the spot</button>`}</div></div></div>`; },
- history(){ const groups=S.history; return `<div class="screen with-tabs">${statusBar()}<div style="padding:12px 16px 16px"><h1 class="h1" style="font-size:26px">Parking history</h1></div><div class="scroll"><div class="list">${groups.length?groups.map(h=>{const p=P(h.pid); return `<button class="card li" data-a="openReceipt" data-v="${h.id}"><div><div class="num" style="font-size:18px">${p.id}</div><div class="hint" style="font-size:13px;margin-top:4px;color:#bbb">${p.name}, Lviv</div><div class="hint" style="margin-top:4px">${durLabel(h.mins)} · ${h.plate}</div></div><div style="text-align:right"><div class="num or" style="font-size:18px">${money(h.total)}</div><div class="hint" style="margin-top:6px">${fmtDate(h.start)}</div></div></button>`;}).join(''):`<div class="empty">No sessions yet. Your parking history will appear here.</div>`}</div></div></div>`; },
- receipt(){ const h=S.history.find(x=>x.id===UI.receiptId); const p=P(h.pid); return `<div class="screen">${statusBar()}${hdr('Receipt')}<div class="scroll"><div class="card" style="padding:20px">
-   <div class="row"><div style="width:44px;height:44px;border-radius:12px;background:var(--grad);display:grid;place-items:center"><span class="num" style="color:#111;font-weight:800">P</span></div><div><div class="num" style="letter-spacing:.08em">PARKING</div><div class="hint">Receipt #${h.id}</div></div></div>
-   <div style="margin-top:16px">${[['Date',fmtDate(h.start)],['Started',fmtTime(h.start)],['Location',`${p.id} · ${p.name}`],['Vehicle',h.plate],['Rate',h.mode==='daily'?money(p.day)+'/day':money(p.rate)+'/hr'],['Duration',durLabel(h.mins)],['Charged to',h.card]].map(([a,b])=>`<div class="kv"><span>${a}</span><span>${b}</span></div>`).join('')}</div>
-   <div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;margin-top:4px"><span style="font-weight:500">Total paid</span><span class="num or" style="font-size:32px">${money(h.total)}</span></div><p class="hint" style="margin:14px 0 0">VAT included. A copy was sent to your email.</p></div></div>
-   <div class="foot"><button class="btn btn-primary" data-a="back">Done</button></div></div>`; },
- fines(){ const list=S.fines.filter(f=>UI.fineTab==='paid'?f.paid:!f.paid); const unpaid=S.fines.filter(f=>!f.paid).length;
-  return `<div class="screen with-tabs">${statusBar()}<div style="padding:12px 16px 16px"><h1 class="h1" style="font-size:26px">Fines</h1><div class="seg" style="margin-top:16px;border-radius:22px;background:rgba(36,36,36,.7)"><button class="${UI.fineTab==='unpaid'?'on':''}" data-a="fineTab" data-v="unpaid">Unpaid${unpaid?' · '+unpaid:''}</button><button class="${UI.fineTab==='paid'?'on':''}" data-a="fineTab" data-v="paid">Paid</button></div></div>
-  <div class="scroll"><div class="list">${list.length?list.map(f=>{const p=P(f.pid); return `<button class="card li" style="flex-direction:column;gap:6px" data-a="openFine" data-v="${f.id}"><div class="row" style="justify-content:space-between;width:100%"><span class="hint" style="font-size:13px">#${f.id}</span><span class="badge ${f.paid?'b-paid':'b-unpaid'}">${f.paid?'Paid':'Unpaid'}</span></div><div style="font-weight:500">${f.reason}</div><div class="row" style="justify-content:space-between;width:100%"><span class="hint">${p.id} · ${p.name} · ${fmtDate(f.date)}</span><span class="num ${f.paid?'':'or'}" style="font-size:20px">${money(f.amount)}</span></div></button>`;}).join('')+(UI.fineTab==='unpaid'?`<div class="card" style="padding:16px 18px;background:rgba(255,69,58,.08);border-color:rgba(255,69,58,.3);color:var(--text);font-size:13px">Pay before the due date to avoid additional penalties.</div>`:''):
-   `<div class="empty"><div style="width:72px;height:72px;border-radius:50%;background:rgba(52,199,89,.14);display:grid;place-items:center;margin:0 auto 16px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#4CD964" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b style="color:var(--text);font-family:var(--f-disp);font-size:20px">${UI.fineTab==='unpaid'?'No unpaid fines':'No paid fines yet'}</b><p style="margin-top:8px">${UI.fineTab==='unpaid'?'You’re all set. Paid fines are kept in the Paid tab.':'Fines you pay will be kept here.'}</p></div>`}</div></div></div>`; },
- fine(){ const f=S.fines.find(x=>x.id===UI.fineId); const p=P(f.pid); return `<div class="screen">${statusBar()}${hdr('Fine details')}<div class="scroll"><div class="card" style="padding:20px">
-  <div class="row" style="justify-content:space-between"><span class="hint" style="font-size:13px">Ref #${f.id}</span><span class="badge ${f.paid?'b-paid':'b-unpaid'}">${f.paid?'Paid':'Unpaid'}</span></div>
-  <div class="hint" style="margin-top:16px;font-size:13px">Amount</div><div class="num or" style="font-size:40px;margin-bottom:10px">${money(f.amount)}</div>
-  ${[['Date issued',fmtDate(f.date)+' · '+fmtTime(f.date)],['Location',`${p.id} · ${p.name}`],['Vehicle',f.plate],['Reason',f.reason],['Due date',fmtDate(f.due)]].map(([a,b])=>`<div class="kv"><span>${a}</span><span>${b}</span></div>`).join('')}
-  <p style="margin:14px 0 0;font-size:13px;color:${f.paid?'var(--ok)':'var(--or)'}">${f.paid?`Paid on ${fmtDate(f.paidAt)}. A receipt was sent to your email.`:`Pay by ${fmtDate(f.due)} to avoid additional penalties.`}</p></div></div>
-  ${f.paid?'':`<div class="foot"><button class="btn btn-primary" data-a="payFine">Pay fine · ${money(f.amount)}</button></div>`}</div>`; },
- profile(){ const ini=S.user.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const rows=[['vehicles','My vehicles',I.car],['cards','Payment methods',I.cardI],['tab:history','Parking history',I.clock],['tab:fines','Fines',I.fine],['notifications','Notifications',I.bell],['settings','Settings',I.gear]];
-  return `<div class="screen with-tabs">${statusBar()}<div style="padding:12px 16px 4px"><h1 class="h1" style="font-size:26px">Profile</h1></div><div class="scroll">
-   <div class="row" style="padding:18px 4px;border-bottom:1px solid var(--line)"><div style="width:52px;height:52px;border-radius:50%;background:#2c2c2c;display:grid;place-items:center;font-family:var(--f-disp);font-weight:700;color:#999">${ini}</div><div><div style="font-weight:600;letter-spacing:.06em">${S.user.name.toUpperCase()}</div><div class="hint" style="margin-top:4px">${S.user.phone}</div></div></div>
-   ${rows.map(([k,l,ic])=>`<button class="menu-row" data-a="${k.startsWith('tab:')?'tab':'go'}" data-v="${k.replace('tab:','')}"><span style="color:#8a8a8a">${ic}</span><span style="flex:1">${l}</span><span style="color:#ddd">${I.chev}</span></button>`).join('')}
-   <button class="menu-row" style="color:var(--red);border:0" data-a="logout">${I.logout}<span>Log out</span></button>
-   <button class="hint" style="margin-top:6px;text-decoration:underline" data-a="reset">Reset demo data</button></div></div>`; },
-
- forgot(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">Reset password</h1><p class="lead">Enter the phone number linked to your account. We’ll send a 6-digit code.</p>
-  <div class="field" style="margin-top:28px"><label for="fphone">Phone number</label><input class="input" id="fphone" inputmode="tel" value="${S.user.phone}" data-m="phone"></div></div>
-  <div class="foot"><button class="btn btn-primary" data-a="sendReset">Send code</button></div></div>`; },
- newPass(){ return `<div class="screen">${statusBar()}${hdr('',true)}<div class="scroll"><h1 class="h1">New password</h1><p class="lead">Choose a strong password you don’t use anywhere else.</p>
-  <div class="field" style="margin-top:28px"><label for="np1">New password</label><input class="input" id="np1" type="password" autocomplete="new-password"></div>
-  <div class="field" style="margin-top:18px"><label for="np2">Confirm password</label><input class="input" id="np2" type="password" autocomplete="new-password"></div>
-  <p class="hint" style="margin-top:12px">At least 8 characters with a mix of letters and numbers.</p><p class="hint" id="perr" style="color:var(--warn)"></p></div>
-  <div class="foot"><button class="btn btn-primary" data-a="savePass">Save password</button></div></div>`; },
- notifications(){ S.notifs.forEach(n=>n.read=true); save(); return `<div class="screen">${statusBar()}${hdr('Notifications')}<div class="scroll"><div class="list">${S.notifs.length?S.notifs.map(n=>`<div class="card" style="padding:16px 18px;display:flex;gap:14px"><span style="width:36px;height:36px;border-radius:10px;background:var(--grad);display:grid;place-items:center;flex:none"><span class="num" style="color:#111;font-size:16px;font-weight:800">P</span></span><div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b style="font-weight:600">${n.title}</b><span class="hint">${fmtDate(n.time)}, ${fmtTime(n.time)}</span></div><p class="hint" style="margin:4px 0 0;font-size:13px;line-height:1.4">${n.body}</p></div></div>`).join(''):`<div class="empty">No notifications yet.</div>`}</div></div></div>`; },
  settings(){ const t=(k,l,d)=>`<div class="row" style="justify-content:space-between;padding:16px 4px;border-bottom:1px solid var(--line)"><div style="min-width:0"><div style="font-weight:500">${l}</div><div class="hint" style="margin-top:3px">${d}</div></div><button class="toggle ${S.settings[k]?'on':''}" data-a="setT" data-v="${k}" aria-label="${l}" aria-pressed="${S.settings[k]}"></button></div>`;
   return `<div class="screen">${statusBar()}${hdr('Settings')}<div class="scroll"><div class="label" style="margin:6px 4px 4px">Notifications</div>
   ${t('geo','Geo-reminder','Remind me to stop parking when I drive away from the spot')}${t('warn15','15-minute warning','Alert before the paid time runs out')}${t('fines','Fine alerts','Tell me when a new fine is issued')}${t('email','Receipts by email','Send a receipt after every payment')}
@@ -638,9 +737,8 @@ const SHEETS={
   <div style="display:flex;flex-direction:column;gap:12px"><button class="btn btn-danger" data-a="doDel">${isV?'Delete vehicle':'Remove card'}</button><button class="btn btn-ghost" data-a="close">Cancel</button></div>`; },
  extend(){ const s=S.session, daily=s.mode==='daily', unit=daily?'day':'hour', p=P(s.pid), n=UI.ext; const price=daily?p.day*n:p.rate*n;
   return `<div class="row" style="justify-content:space-between"><div><div class="hint" style="font-size:12px">PARKING ${s.pid}</div><h3>Extend parking</h3></div><button class="x" data-a="close" aria-label="Close">${I.x}</button></div>
-  <div class="card" style="margin-top:20px;padding:16px;background:#1b1b1b"><div class="label" style="text-align:center">Add time</div><div class="stepper" style="margin-top:12px"><button class="step-btn" data-a="ext" data-v="-1" ${n<=1?'disabled':''} aria-label="Less">${I.minus}</button><span class="num" style="font-size:30px">+${hl(n,unit)}</span><button class="step-btn plus" data-a="ext" data-v="1" aria-label="More">${I.plusB}</button></div></div>
-  <div class="label" style="margin:18px 0 10px">Quick add</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${[1,2,3].map(k=>`<button class="chip" data-a="extAdd" data-v="${k}">+${hl(k,unit)} <span class="hint">${money(daily?p.day*k:p.rate*k)}</span></button>`).join('')}</div>
-  <div class="row" style="justify-content:space-between;margin:22px 2px 16px"><span class="hint" style="font-size:14px">Additional price</span><span class="num or" style="font-size:24px">${money(price)}</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px">${[1,2,3].map(k=>`<button class="extopt ${n===k?'on':''}" data-a="extSet" data-v="${k}"><b>+${hl(k,unit)}</b><span>${money(daily?p.day*k:p.rate*k)}</span></button>`).join('')}</div>
+  <div class="row" style="justify-content:space-between;margin:22px 2px 16px"><span class="hint" style="font-size:13px">Additional price</span><span class="num" style="font-size:20px">${money(price)}</span></div>
   <button class="btn btn-primary" data-a="payExtend">Confirm extension</button>`; }
 };
 function paySheetHTML(){ const pay=UI.pay;
@@ -657,7 +755,7 @@ function confirmPay(){ if(!UI.pay||UI.pay.stage!=='confirm') return; UI.pay.stag
 function finishPay(kind){
  if(kind==='start'){ startSession(); UI.stack=[]; UI.route='active'; render('fade'); }
  else if(kind==='extend'){ const s=S.session, daily=s.mode==='daily', p=P(s.pid), n=UI.ext; const add=n*(daily?1440:60); s.endsAt+=add*60e3; s.mins+=add; s.total+=daily?p.day*n:p.rate*n; s.warned=false; save(); notify('Parking extended',`${s.pid} · +${hl(n,daily?'day':'hour')} · ${money(daily?p.day*n:p.rate*n)}`); UI.route='active'; render(); toast('Parking successfully extended'); }
- else if(kind==='fine'){ const f=S.fines.find(x=>x.id===UI.fineId); f.paid=true; f.paidAt=vnow(); save(); notify('Fine paid',`#${f.id} · ${money(f.amount)}`); render(); toast('Fine paid'); }
+ else if(kind==='fine'){ const f=S.fines.find(x=>x.id===UI.fineId); f.paid=true; f.paidAt=vnow(); save(); notify('Fine paid',`№ ${f.id} · ${money(f.amount)}`); UI.stack=[]; UI.route='finePaid'; render('push'); }
 }
 
 /* ---------- render ---------- */
@@ -780,22 +878,36 @@ function back(){ UI.route=UI.stack.pop()||'map'; render('pop'); }
 
 /* ---------- actions ---------- */
 const A={
- go:(v)=>go(v), back, close:()=>{ if(UI.pay&&UI.pay.stage!=='confirm') return; UI.returnToPay=null; closeSheet(); },
+ go:(v)=>go(v), back,
+ hcity:(v)=>{ UI.hcity=v; render(); },
+ eye:(v,el)=>{ const i=$('#'+v); if(!i) return; i.type=i.type==='password'?'text':'password'; },
+ createPassGo:()=>{ if(!updRules('cp')){ $('#cperr').textContent='Check the password rules above.'; return; } UI.stack=[]; UI.route='faceSetup'; render('push'); },
+ faceOn:()=>{ S.settings.faceid=true; save(); toast('Face ID enabled'); UI.stack=[]; UI.route='location'; render('push'); },
+ locAllow:()=>{ S.locOff=false; A.toMap(); },
+ mloc:(v)=>{ UI.mloc=v; render(); },
+ locManual:()=>{ S.locOff=true; A.toMap(); },
+ locOn:()=>{ S.locOff=false; save(); render(); toast('Location is on'); },
+ demoToast:(v)=>toast(v),
+ toFines:()=>{ UI.stack=[]; UI.route='fines'; UI.fineTab='unpaid'; render('fade'); },
+ toLogin:()=>{ UI.stack=['welcome']; UI.route='login'; render('push'); },
+ durSet:(v)=>{ const k=S.setup.mode==='daily'?'days':'hours'; S.setup[k]=+v; save(); render(); },
+ extSet:(v)=>{ UI.ext=+v; render(); },
+ close:()=>{ if(UI.pay&&UI.pay.stage!=='confirm') return; UI.returnToPay=null; closeSheet(); },
  goClose:(v)=>{ closeSheet(()=>go(v)); },
  tab:(v)=>{ if(TAB_OF[UI.route]===v && UI.route===v) return; UI.stack=[]; UI.sheet=null; UI.route=v; render('fade'); },
  sheet:(v)=>{ if(v==='extend') UI.ext=1; UI.sheet=v; if(v!=='pay'&&UI.pay&&UI.pay.stage==='confirm'){ UI.returnToPay=UI.pay; } render(); },
- otpDone:()=>{ if(UI.otpFor==='reset'){ UI.otpFor='signup'; UI.stack.push(UI.route); UI.route='newPass'; render('push'); return; } S.authed=true; save(); UI.stack=[]; UI.route='location'; render('push'); },
+ otpDone:()=>{ if(UI.otpFor==='reset'){ UI.otpFor='signup'; UI.stack.push(UI.route); UI.route='newPass'; render('push'); return; } S.authed=true; save(); UI.stack=[]; UI.route='createPass'; render('push'); },
  loginGo:()=>{ const ph=$('#lphone'), pw=$('#lpass'); let ok=true;
-  const bad=(el,msg)=>{ el.classList.add('err'); $('#'+el.id+'-err').textContent=msg; ok=false; };
+  const bad=(el,msg)=>{ ($('#'+el.id+'-box')||el).classList.add('err'); $('#'+el.id+'-err').textContent=msg; ok=false; };
   const digits=ph.value.replace(/\D/g,'');
-  if(!digits) bad(ph,'Enter your phone number.'); else if(digits.length<10||digits.length>13) bad(ph,'Enter a valid phone number.');
+  if(!digits) bad(ph,'Enter your phone number.'); else if(digits.length<9||digits.length>13) bad(ph,'Enter a valid phone number.');
   if(!pw.value) bad(pw,'Enter your password.'); else if(pw.value.length<6) bad(pw,'Password must be at least 6 characters.');
-  if(!ok) return; S.user.phone=ph.value.trim(); save(); A.loginDone(); },
+  if(!ok) return; const pv=ph.value.trim(); S.user.phone=pv.startsWith('+')?pv:'+380 '+pv; save(); A.loginDone(); },
  faceId:()=>{ if(document.querySelector('.faceid')) return; const dev=$('#device'); const o=document.createElement('div'); o.className='faceid';
   o.innerHTML=`<div class="faceid-card"><svg class="fid" width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V12a6 6 0 0 1 6-6h8M44 6h8a6 6 0 0 1 6 6v8M58 44v8a6 6 0 0 1-6 6h-8M20 58h-8a6 6 0 0 1-6-6v-8"/><g class="fid-face"><path d="M22 24v4M42 24v4M32 24v12h-3M24 44c4.5 4 11.5 4 16 0"/></g><path class="fid-ok" d="M20 33l8 8 16-17"/></svg><span>Face ID</span></div>`;
   dev.appendChild(o);
   setTimeout(()=>{ o.classList.add('done'); o.querySelector('span').textContent='Recognized';
-   const ph=$('#lphone'), pw=$('#lpass'); if(ph){ ph.value=S.user.phone||DEFAULTS.user.phone; ph.classList.remove('err'); $('#lphone-err').textContent=''; } if(pw){ pw.value='parking2026'; pw.classList.remove('err'); $('#lpass-err').textContent=''; } },1300);
+   const ph=$('#lphone'), pw=$('#lpass'); if(ph){ ph.value=(S.user.phone||DEFAULTS.user.phone).replace(/^\+380\s?/,''); $('#lphone-box')?.classList.remove('err'); $('#lphone-err').textContent=''; } if(pw){ pw.value='parking2026'; $('#lpass-box')?.classList.remove('err'); $('#lpass-err').textContent=''; } },1300);
   setTimeout(()=>{ o.classList.add('out'); },2000);
   setTimeout(()=>{ o.remove(); A.loginDone(); },2250); },
  loginDone:()=>{ S.authed=true; save(); UI.stack=[]; UI.route=S.onboarded?'map':'location'; render('push'); },
@@ -841,7 +953,7 @@ const A={
  setT:(v)=>{ S.settings[v]=!S.settings[v]; save(); render(); },
  pickResult:(v)=>{ UI.selected=v; UI.search=''; document.activeElement?.blur(); render(); },
  sendReset:()=>{ UI.otpFor='reset'; go('otp'); },
- savePass:()=>{ ['np1','np2'].forEach(k=>$('#'+k).classList.remove('err')); const a=$('#np1').value,b=$('#np2').value; if(a.length<8||!/\d/.test(a)||!/[a-z]/i.test(a)){ $('#perr').textContent='Use at least 8 characters with letters and numbers.'; return; } if(a!==b){ $('#perr').textContent='The passwords don’t match.'; return; } UI.stack=['welcome']; UI.route='login'; render('pop'); toast('Password updated'); },
+ savePass:()=>{ ['np1','np2'].forEach(k=>$('#'+k).classList.remove('err')); const a=$('#np1').value,b=$('#np2').value; if(!updRules('np')){ $('#perr').textContent='Check the password rules above.'; return; } UI.stack=[]; UI.route='passUpdated'; render('push'); },
  driveAway:()=>{ if(!S.settings.geo){ toast('Geo-reminder is off in Settings','warn'); return; } const s=S.session; UI.banner={title:`Looks like you left ${s.pid}`,body:`You drove away, but parking is still running. End it now and get ${money(refundEst().refund)} back for the unused time.`}; notify(`You left ${s.pid}`,'You drove away from the spot while parking was still running.'); render(); },
  stopParking:()=>{ const s=S.session; if(!s) return; const p=P(s.pid), now=vnow(), usedMin=Math.max(1,(now-s.startAt)/60000); let charged; if(s.mode==='daily'){ const d=Math.max(1,Math.ceil(usedMin/1440)); charged=Math.min(s.total,d*p.day); } else { const h=Math.max(1,Math.ceil(usedMin/60)); charged=Math.min(s.total,h*p.rate); } s.refund=Math.max(0,s.total-charged); s.total=charged; s.mins=Math.round(usedMin); s.endsAt=now; s.stopped=true; UI.banner=null; endSession(); notify('Parking stopped',`${s.pid} · ${money(s.refund)} returned to ${s.card}`); UI.stack=[]; UI.route='active'; render(); toast('Parking stopped'); },
  keepParking:()=>{ UI.banner=null; render(); },
@@ -850,15 +962,16 @@ const A={
  reset:()=>{ S=JSON.parse(JSON.stringify(DEFAULTS)); S.authed=true; S.onboarded=true; S.clock={real:Date.now(),virt:Date.now()}; save(); UI.stack=[]; UI.route='map'; UI.selected=null; render('fade'); toast('Demo data reset'); }
 };
 document.addEventListener('click',e=>{ const el=e.target.closest('[data-a]'); if(!el) return; const a=el.dataset.a; if(A[a]){ e.preventDefault(); A[a](el.dataset.v,el); } });
-document.addEventListener('input',e=>{ const t=e.target; if(t.classList.contains('err')){ t.classList.remove('err'); const fe=document.getElementById(t.id+'-err'); if(fe) fe.textContent=''; }
+document.addEventListener('input',e=>{ const t=e.target; const bx=document.getElementById(t.id+'-box'); if(t.classList.contains('err')||(bx&&bx.classList.contains('err'))){ t.classList.remove('err'); bx&&bx.classList.remove('err'); const fe=document.getElementById(t.id+'-err'); if(fe) fe.textContent=''; }
  if(t.dataset.m==='search'){ UI.search=t.value; UI.selected=null; render(); }
- else if(t.dataset.m==='phone'){ S.user.phone=t.value.trim()||DEFAULTS.user.phone; save(); }
+ else if(t.dataset.m==='phone'){ const v=t.value.trim(); S.user.phone=v?(v.startsWith('+')?v:'+380 '+v):DEFAULTS.user.phone; save(); }
  else if(t.dataset.m==='price'){ S.filters.maxPrice=+t.value; save(); const pv=$('#pval'); if(pv) pv.textContent=money(+t.value)+'/hr'; const b=document.querySelector('.sheet .btn-primary'); if(b) b.textContent=`Show ${filtered().length} parkings`; }
  else if(t.dataset.otp){ const d=t.value.replace(/\D/g,''); const i=+t.dataset.otp;
   if(d.length>2){ [...d].slice(0,6-i).forEach((c,j)=>{ $('#otp'+(i+j)).value=c; }); } else t.value=d.slice(-1);
-  const all=[0,1,2,3,4,5].every(k=>$('#otp'+k).value); $('#otpGo').disabled=!all;
+  const all=[0,1,2,3,4,5].every(k=>$('#otp'+k).value); const og=$('#otpGo'); if(og) og.disabled=!all; if(all) setTimeout(()=>{ if(['otp'].includes(UI.route)) A.otpDone(); },450);
   if(all){ t.blur(); document.activeElement&&document.activeElement.blur&&document.activeElement.blur(); }
   else if(t.value){ const nx=[0,1,2,3,4,5].find(k=>k>i&&!$('#otp'+k).value); if(nx!==undefined) $('#otp'+nx).focus(); } }
+ else if(t.dataset.pw){ updRules(t.dataset.pw); }
  else if(t.dataset.card){ t.value=t.value.replace(/\D/g,'').slice(0,16).replace(/(\d{4})(?=\d)/g,'$1 '); }
  else if(t.dataset.exp){ let d=t.value.replace(/\D/g,'').slice(0,4); if(d.length===1&&+d>1) d='0'+d; const back=e.inputType==='deleteContentBackward'; t.value = d.length>2 ? d.slice(0,2)+' / '+d.slice(2) : (d.length===2&&!back ? d+' / ' : d); }
  else if(t.dataset.cvv){ t.value=t.value.replace(/\D/g,'').slice(0,4); }
@@ -889,6 +1002,10 @@ setInterval(()=>{
 },250);
 
 /* ---------- boot ---------- */
+/* fit the 393x852 phone into short desktop windows without cutting its content */
+function fitDevice(){ const full=matchMedia('(max-width:520px),(display-mode:standalone)').matches; const s=full?1:Math.min(1,(innerHeight-40)/872,(innerWidth-40)/413); document.documentElement.style.setProperty('--fit',s.toFixed(3)); if(full) document.documentElement.style.removeProperty('--fit'); }
+addEventListener('resize',fitDevice); fitDevice();
+
 initLeaflet();
 render();
 /* every launch: splash -> welcome (log in again; saved vehicles, cards and history are kept) */

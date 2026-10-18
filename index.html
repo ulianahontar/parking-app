@@ -30,9 +30,9 @@ body{background:#070707;color:var(--text);font-family:var(--f-body);font-size:15
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--or);outline-offset:2px}
-.stage{height:100%;display:flex;align-items:center;justify-content:center;padding-inline:16px;padding-block:16px}
-.device{position:relative;width:393px;height:852px;max-height:calc(100% - 0px);border-radius:52px;overflow:hidden;background:var(--ink);box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #333,0 40px 120px rgba(0,0,0,.6);isolation:isolate}
-@media (max-width:520px),(max-height:700px),(display-mode:standalone){
+.stage{height:100%;display:flex;align-items:center;justify-content:center;padding-inline:16px;padding-block:16px;overflow:hidden}
+.device{position:relative;width:393px;height:852px;flex:none;transform:scale(var(--fit,1));transform-origin:center;border-radius:52px;overflow:hidden;background:var(--ink);box-shadow:0 0 0 10px #1b1b1b,0 0 0 11px #333,0 40px 120px rgba(0,0,0,.6);isolation:isolate}
+@media (max-width:520px),(display-mode:standalone){
  html,body{background:#111;overscroll-behavior:none}
  .device::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46px;z-index:2;pointer-events:none;background:linear-gradient(rgba(17,17,17,0),#111)}
  html.sheet-open,html.sheet-open body{background:#232323}
@@ -323,6 +323,10 @@ input[type=range]{width:100%;accent-color:var(--or)}
 .input:focus,.otp input:focus{border-color:rgba(255,255,255,.4)}
 .endpill{margin-left:auto;font-size:13px;font-weight:500;padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.16);color:var(--text)}
 .ua{overflow:visible}
+
+/* scroll: visible thin scrollbar on desktop, content fades out under the tab bar */
+@media (pointer:fine){.scroll{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}.scroll::-webkit-scrollbar{display:block;width:6px}.scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:3px}}
+.with-tabs .scroll{-webkit-mask-image:linear-gradient(#000 calc(100% - 150px),transparent calc(100% - 96px));mask-image:linear-gradient(#000 calc(100% - 150px),transparent calc(100% - 96px))}
 
 /* ---------- Figma-matched components ---------- */
 .ttl{font-family:var(--f-disp);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:0;padding:27px 16px 16px;margin:0;flex:none}
@@ -998,6 +1002,10 @@ setInterval(()=>{
 },250);
 
 /* ---------- boot ---------- */
+/* fit the 393x852 phone into short desktop windows without cutting its content */
+function fitDevice(){ const full=matchMedia('(max-width:520px),(display-mode:standalone)').matches; const s=full?1:Math.min(1,(innerHeight-40)/872,(innerWidth-40)/413); document.documentElement.style.setProperty('--fit',s.toFixed(3)); if(full) document.documentElement.style.removeProperty('--fit'); }
+addEventListener('resize',fitDevice); fitDevice();
+
 initLeaflet();
 render();
 /* every launch: splash -> welcome (log in again; saved vehicles, cards and history are kept) */
